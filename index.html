@@ -1383,6 +1383,140 @@ svg { display: block; }
     margin-bottom: 2rem;
     font-weight: 300;
 }
+
+/* ═══════════════════════════════════════════════════
+   ADVANCED FILTERS
+   ═══════════════════════════════════════════════════ */
+.filters-toggle {
+    width: 100%;
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink);
+    transition: var(--transition);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+.filters-toggle:hover { border-color: var(--gold); }
+.filters-toggle.active { border-color: var(--gold); background: var(--gold-tint); color: var(--gold-deep); }
+.filters-count {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--gold-deep);
+    font-size: 0.75rem;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.filters-panel {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 1.4rem;
+    margin-bottom: 1.25rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+.filters-panel.open { display: block; }
+.price-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.3rem;
+}
+.price-chip {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border: 0.5px solid var(--ink-30);
+    color: var(--ink-70);
+    transition: var(--transition);
+    font-family: var(--sans);
+}
+.price-chip.active { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+.time-filter-row { display: flex; gap: 0.75rem; align-items: center; }
+.filter-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 0.5px solid var(--ink-10);
+}
+
+.google-banner {
+    background: linear-gradient(135deg, var(--cream-deep) 0%, var(--cream) 100%);
+    border: 0.5px solid var(--gold);
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin: 1.25rem 0;
+}
+.google-title {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+}
+.google-sub { font-size: 0.75rem; color: var(--ink-50); font-family: var(--serif); font-style: italic; font-weight: 300; }
+
+.google-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.22rem 0.55rem;
+    background: #4285F4;
+    color: white;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 2px;
+}
+
+.loading-row {
+    padding: 2rem 1rem;
+    text-align: center;
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-50);
+    font-weight: 300;
+}
+.loading-row::before {
+    content: '—';
+    display: block;
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+.api-setup-steps {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+.api-setup-steps ol {
+    padding-left: 1.25rem;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--ink-70);
+}
+.api-setup-steps ol li { padding: 0.3rem 0; }
+.api-setup-steps a { color: var(--gold-deep); text-decoration: underline; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -1469,9 +1603,8 @@ svg { display: block; }
     <div class="screen active" id="screen-feed">
         <div class="feed-greeting">
             <div class="hello">
-                Boa noite, <span class="italic" id="greetingName">caro</span>.
+                <span id="greetingLabel">Boa noite</span>, <span class="italic" id="greetingName">caro</span>.
             </div>
-            <div class="sub">Quem está recebendo hoje?</div>
         </div>
 
         <div class="eyebrow gold">Últimos encontros</div>
@@ -1492,8 +1625,89 @@ svg { display: block; }
                     <rect x="5" y="11" width="14" height="10" rx="1"/>
                     <path d="M8 11V7a4 4 0 018 0v4"/>
                 </svg>
-                Círculo Privado
+                Private
             </button>
+        </div>
+
+        <!-- Advanced filters -->
+        <button class="filters-toggle" id="filtersToggleBtn" onclick="toggleFilters()">
+            <span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" style="vertical-align:middle; margin-right:0.4rem;">
+                    <path d="M3 6h18M6 12h12M10 18h4"/>
+                </svg>
+                Filtros avançados
+            </span>
+            <span id="filtersCount" class="filters-count"></span>
+        </button>
+
+        <div class="filters-panel" id="filtersPanel">
+            <div class="field">
+                <label class="field-label">Gastronomia</label>
+                <select class="select" id="filterCuisine" onchange="onFilterChange()">
+                    <option value="">Todas</option>
+                    <option value="italiana">Italiana</option>
+                    <option value="japonesa">Japonesa</option>
+                    <option value="francesa">Francesa</option>
+                    <option value="brasileira">Brasileira</option>
+                    <option value="contemporanea">Contemporânea</option>
+                    <option value="steakhouse">Steakhouse</option>
+                    <option value="churrasco">Churrasco</option>
+                    <option value="frutos-do-mar">Frutos do mar</option>
+                    <option value="bistro">Bistrô</option>
+                    <option value="mediterranea">Mediterrânea</option>
+                    <option value="mexicana">Mexicana</option>
+                    <option value="argentina">Argentina</option>
+                    <option value="asiatica">Asiática / Fusion</option>
+                    <option value="coreana">Coreana</option>
+                    <option value="nordestina">Nordestina</option>
+                    <option value="bar-gastronomico">Bar gastronômico</option>
+                    <option value="cervejaria">Cervejaria</option>
+                    <option value="boteco">Boteco</option>
+                    <option value="wine-bar">Wine bar</option>
+                    <option value="coquetelaria">Coquetelaria</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label class="field-label">Preço médio por pessoa</label>
+                <div class="price-chips">
+                    <button class="price-chip active" onclick="setPriceFilter('any', this)">Todos</button>
+                    <button class="price-chip" onclick="setPriceFilter('low', this)">$ · até R$ 80</button>
+                    <button class="price-chip" onclick="setPriceFilter('mid', this)">$$ · R$ 80–150</button>
+                    <button class="price-chip" onclick="setPriceFilter('high', this)">$$$ · R$ 150–220</button>
+                    <button class="price-chip" onclick="setPriceFilter('luxury', this)">$$$$ · R$ 220+</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="field-label">Bairro</label>
+                <select class="select" id="filterNeighborhood" onchange="onFilterChange()">
+                    <option value="">Todos</option>
+                    <option value="Asa Sul">Asa Sul</option>
+                    <option value="Asa Norte">Asa Norte</option>
+                    <option value="Lago Sul">Lago Sul</option>
+                    <option value="Lago Norte">Lago Norte</option>
+                    <option value="Sudoeste">Sudoeste</option>
+                    <option value="Noroeste">Noroeste</option>
+                    <option value="Águas Claras">Águas Claras</option>
+                    <option value="Guará">Guará</option>
+                    <option value="Taguatinga">Taguatinga</option>
+                    <option value="Park Way">Park Way</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label class="field-label">Aberto neste horário</label>
+                <div class="time-filter-row">
+                    <input class="input" type="time" id="filterTime" onchange="onFilterChange()" style="flex:1;">
+                    <button class="btn btn-ghost btn-sm" onclick="setNowTime()">Agora</button>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="btn btn-outline btn-sm" onclick="clearFilters()">Limpar</button>
+                <button class="btn btn-dark btn-sm" onclick="applyFilters()">Aplicar</button>
+            </div>
         </div>
 
         <div class="tier-toggle" id="exploreTiers">
@@ -1502,7 +1716,23 @@ svg { display: block; }
             <button class="tier-btn" onclick="filterTier('mais_tranquilo', this, 'explore')">Casual</button>
         </div>
 
+        <div class="google-banner" id="googleBanner" style="display:none;">
+            <div class="google-info">
+                <div class="google-title">Busca via Google Places</div>
+                <div class="google-sub">Amplie além da curadoria com resultados do Google Maps.</div>
+            </div>
+            <button class="btn btn-dark btn-sm" onclick="openGoogleSetup()" id="googleSetupBtn">Ativar</button>
+        </div>
+
+        <div id="exploreResultsHeader" style="display:none;">
+            <div class="eyebrow gold" style="margin-bottom:0.6rem;">Curadoria Gerência</div>
+        </div>
         <div id="exploreList"></div>
+
+        <div id="googleResultsSection" style="display:none; margin-top:2rem;">
+            <div class="eyebrow gold">Via Google Places</div>
+            <div id="googleResultsList"></div>
+        </div>
     </div>
 
     <!-- CREATE ROLE -->
@@ -1613,7 +1843,7 @@ svg { display: block; }
 
         <!-- Step 3 -->
         <div class="step-content" id="step3">
-            <div class="eyebrow">Amigos do círculo</div>
+            <div class="eyebrow">Friends</div>
             <div id="friendCheckList"></div>
             <div class="line"></div>
             <div class="eyebrow" id="guestsTitle">Acompanhantes</div>
@@ -1652,7 +1882,7 @@ svg { display: block; }
 
     <!-- CIRCLE -->
     <div class="screen" id="screen-circle">
-        <div class="eyebrow gold">Seu círculo</div>
+        <div class="eyebrow gold">Seus friends</div>
         <h2 class="section-title" id="circleTitle">Conexões</h2>
 
         <div class="circle-intro">
@@ -1683,7 +1913,7 @@ svg { display: block; }
     <!-- MEMBERS (Premium) -->
     <div class="screen" id="screen-members">
         <div class="members-hero">
-            <div class="members-hero-eyebrow">Círculo Privado</div>
+            <div class="members-hero-eyebrow">Private</div>
             <h2>Onde <span class="italic">não se entra</span> sem convite.</h2>
             <p>Festas privadas em Brasília que só quem é da bolha sabe onde acontecem. O endereço é revelado 24h antes. A lista é curada. O network é real.</p>
             <ul class="members-benefits">
@@ -1765,7 +1995,7 @@ svg { display: block; }
                 </div>
                 <div class="profile-stat">
                     <div class="profile-stat-num" id="statFriends">0</div>
-                    <div class="profile-stat-label">Círculo</div>
+                    <div class="profile-stat-label">Friends</div>
                 </div>
                 <div class="profile-stat">
                     <div class="profile-stat-num" id="statHost">0</div>
@@ -1780,7 +2010,7 @@ svg { display: block; }
 
         <div class="profile-section">
             <div class="profile-section-title">
-                Seu círculo
+                Seus friends
                 <span class="count" id="myFriendsCount">—</span>
             </div>
             <div id="myFriendsPreview"></div>
@@ -1834,7 +2064,7 @@ svg { display: block; }
                     <path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M14 18c0-2 1.5-3.5 4-3.5s3 1.5 3 3.5"/>
                 </svg>
             </div>
-            <span class="nav-label">Círculo</span>
+            <span class="nav-label">Friends</span>
             <div class="nav-dot"></div>
         </button>
         <button class="nav-item" data-screen="screen-roles" onclick="switchScreen('screen-roles', this)">
@@ -1963,59 +2193,112 @@ svg { display: block; }
     </div>
 </div>
 
+<div class="modal-overlay" id="modalGoogleSetup" onclick="closeModal(event, 'modalGoogleSetup')">
+    <div class="modal">
+        <div class="modal-handle"></div>
+        <div class="eyebrow gold">Google Places</div>
+        <h3>Conectar Google Maps</h3>
+        <p style="font-family:var(--serif); font-style:italic; color:var(--ink-70); font-size:0.92rem; margin-bottom:1.5rem; font-weight:300; line-height:1.55;">
+            Para buscar estabelecimentos fora da curadoria, adicione sua chave da API do Google Places. A chave é salva apenas no seu dispositivo.
+        </p>
+
+        <div class="api-setup-steps">
+            <ol>
+                <li>Acesse o <a href="https://console.cloud.google.com/google/maps-apis/credentials" target="_blank" rel="noopener">Google Cloud Console</a></li>
+                <li>Crie um projeto ou selecione um existente</li>
+                <li>Ative a <strong>Places API</strong> e <strong>Maps JavaScript API</strong></li>
+                <li>Gere uma chave em <strong>Credenciais</strong></li>
+                <li>Restrinja a chave por <strong>HTTP referrer</strong> adicionando: <code>gerencia-ten.vercel.app/*</code></li>
+                <li>Cole abaixo</li>
+            </ol>
+        </div>
+
+        <div class="field">
+            <label class="field-label">Chave da API</label>
+            <input class="input" type="text" id="googleApiKeyInput" placeholder="AIzaSy..." style="font-family:monospace; font-size:0.82rem;">
+        </div>
+
+        <div style="display:flex; gap:0.75rem;">
+            <button class="btn btn-outline btn-full" onclick="closeModalById('modalGoogleSetup')">Cancelar</button>
+            <button class="btn btn-dark btn-full" onclick="saveGoogleApiKey()">Salvar e ativar</button>
+        </div>
+
+        <button class="btn btn-ghost btn-sm btn-full" onclick="removeGoogleApiKey()" style="margin-top:1rem;" id="removeKeyBtn">Remover chave salva</button>
+    </div>
+</div>
+
 <script>
 /* ═══════════════════════════════════════════════════
    VENUES
    ═══════════════════════════════════════════════════ */
 const VENUES = [
     // Restaurantes High End
-    { id: 101, name: "Trattoria da Rosário", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.6, vibe: "Romântico", cozinha: "Italiana clássica", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 102, name: "Lake's", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 220, rating: 4.5, vibe: "Sofisticado", cozinha: "Contemporânea", hours: "Ter-Sáb: 19h-00h" },
-    { id: 103, name: "Lago Restaurante", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 200, rating: 4.5, vibe: "Elegante", cozinha: "Contemporânea", hours: "Ter-Dom: 12h-15h / 19h-23h" },
-    { id: 104, name: "Marie Cuisine", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 250, rating: 4.7, vibe: "Premium", cozinha: "Francesa", hours: "Ter-Sáb: 19h-23h30" },
-    { id: 105, name: "Norū Sushi", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.6, vibe: "Sofisticado", cozinha: "Japonesa premium", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 106, name: "New Koto", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 180, rating: 4.5, vibe: "Elegante", cozinha: "Japonesa", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
-    { id: 107, name: "Nippon Restaurante", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 160, rating: 4.4, vibe: "Clássico", cozinha: "Japonesa", hours: "Seg-Sáb: 12h-14h30 / 19h-23h" },
-    { id: 108, name: "Kinjo Culinária Japonesa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Refinado", cozinha: "Japonesa contemporânea", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 109, name: "NK Sushi", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Intimista", cozinha: "Sushi bar", hours: "Ter-Sáb: 18h30-23h30" },
-    { id: 110, name: "Soho", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Moderno", cozinha: "Fusion", hours: "Ter-Sáb: 19h-00h" },
-    { id: 111, name: "Kawa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 112, name: "Sunsak", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 160, rating: 4.4, vibe: "Elegante", cozinha: "Japonesa/Coreana", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
-    { id: 113, name: "Montaro", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa", hours: "Ter-Dom: 12h-15h / 19h-23h" },
-    { id: 114, name: "Rooftop B Hotel", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 200, rating: 4.5, vibe: "Rooftop", cozinha: "Contemporânea", hours: "Ter-Sáb: 18h-00h" },
-    { id: 115, name: "Chicago Prime", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 220, rating: 4.6, vibe: "Premium", cozinha: "Steakhouse", hours: "Seg-Sex: 12h-15h / 19h-23h" },
-    { id: 116, name: "Chard", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 230, rating: 4.6, vibe: "Refinado", cozinha: "Autoral", hours: "Ter-Sáb: 19h-23h30" },
-    { id: 117, name: "Fogo de Chão", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.5, vibe: "Sofisticado", cozinha: "Churrasco", hours: "Seg-Sex: 12h-15h / 19h-23h" },
-    { id: 118, name: "Gurume", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 160, rating: 4.5, vibe: "Moderno", cozinha: "Japonesa/Fusion", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 119, name: "Bloco C", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Descolado", cozinha: "Contemporânea", hours: "Ter-Dom: 12h-15h / 19h-00h" },
-    { id: 120, name: "A Mano", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Elegante", cozinha: "Italiana", hours: "Ter-Sáb: 19h-23h30" },
-    { id: 121, name: "Fazenda Churrascada", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.5, vibe: "Rústico premium", cozinha: "Churrasco", hours: "Seg-Dom: 12h-23h" },
+    { id: 101, name: "Trattoria da Rosário", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.6, vibe: "Romântico", cozinha: "Italiana clássica", cuisineKey: "italiana", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 102, name: "Lake's", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 220, rating: 4.5, vibe: "Sofisticado", cozinha: "Contemporânea", cuisineKey: "contemporanea", openH: 19, closeH: 24, hours: "Ter-Sáb: 19h-00h" },
+    { id: 103, name: "Lago Restaurante", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 200, rating: 4.5, vibe: "Elegante", cozinha: "Contemporânea", cuisineKey: "contemporanea", openH: 12, closeH: 23, hours: "Ter-Dom: 12h-15h / 19h-23h" },
+    { id: 104, name: "Marie Cuisine", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 250, rating: 4.7, vibe: "Premium", cozinha: "Francesa", cuisineKey: "francesa", openH: 19, closeH: 24, hours: "Ter-Sáb: 19h-23h30" },
+    { id: 105, name: "Norū Sushi", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.6, vibe: "Sofisticado", cozinha: "Japonesa premium", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 106, name: "New Koto", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 180, rating: 4.5, vibe: "Elegante", cozinha: "Japonesa", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
+    { id: 107, name: "Nippon Restaurante", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 160, rating: 4.4, vibe: "Clássico", cozinha: "Japonesa", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-14h30 / 19h-23h" },
+    { id: 108, name: "Kinjo Culinária Japonesa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Refinado", cozinha: "Japonesa contemporânea", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 109, name: "NK Sushi", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Intimista", cozinha: "Sushi bar", cuisineKey: "japonesa", openH: 18, closeH: 24, hours: "Ter-Sáb: 18h30-23h30" },
+    { id: 110, name: "Soho", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Moderno", cozinha: "Fusion", cuisineKey: "asiatica", openH: 19, closeH: 24, hours: "Ter-Sáb: 19h-00h" },
+    { id: 111, name: "Kawa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 112, name: "Sunsak", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 160, rating: 4.4, vibe: "Elegante", cozinha: "Japonesa/Coreana", cuisineKey: "coreana", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
+    { id: 113, name: "Montaro", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Ter-Dom: 12h-15h / 19h-23h" },
+    { id: 114, name: "Rooftop B Hotel", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 200, rating: 4.5, vibe: "Rooftop", cozinha: "Contemporânea", cuisineKey: "contemporanea", openH: 18, closeH: 24, hours: "Ter-Sáb: 18h-00h" },
+    { id: 115, name: "Chicago Prime", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 220, rating: 4.6, vibe: "Premium", cozinha: "Steakhouse", cuisineKey: "steakhouse", openH: 12, closeH: 23, hours: "Seg-Sex: 12h-15h / 19h-23h" },
+    { id: 116, name: "Chard", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 230, rating: 4.6, vibe: "Refinado", cozinha: "Autoral", cuisineKey: "contemporanea", openH: 19, closeH: 24, hours: "Ter-Sáb: 19h-23h30" },
+    { id: 117, name: "Fogo de Chão", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.5, vibe: "Sofisticado", cozinha: "Churrasco", cuisineKey: "churrasco", openH: 12, closeH: 23, hours: "Seg-Sex: 12h-15h / 19h-23h" },
+    { id: 118, name: "Gurume", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 160, rating: 4.5, vibe: "Moderno", cozinha: "Japonesa/Fusion", cuisineKey: "japonesa", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 119, name: "Bloco C", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Descolado", cozinha: "Contemporânea", cuisineKey: "contemporanea", openH: 12, closeH: 24, hours: "Ter-Dom: 12h-15h / 19h-00h" },
+    { id: 120, name: "A Mano", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Elegante", cozinha: "Italiana", cuisineKey: "italiana", openH: 19, closeH: 24, hours: "Ter-Sáb: 19h-23h30" },
+    { id: 121, name: "Fazenda Churrascada", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.5, vibe: "Rústico premium", cozinha: "Churrasco", cuisineKey: "churrasco", openH: 12, closeH: 23, hours: "Seg-Dom: 12h-23h" },
     // Restaurantes Tranquilos
-    { id: 201, name: "Santé 13", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 90, rating: 4.5, vibe: "Aconchegante", cozinha: "Bistrô", hours: "Seg-Sáb: 12h-15h / 18h-23h" },
-    { id: 202, name: "Sallva", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 100, rating: 4.5, vibe: "Casual chique", cozinha: "Brasileira", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 203, name: "Caminito Parrilla", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.4, vibe: "Descontraído", cozinha: "Argentina", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
-    { id: 204, name: "Nino Cucina", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Aconchegante", cozinha: "Italiana", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
-    { id: 205, name: "Mangai", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 85, rating: 4.5, vibe: "Regional", cozinha: "Nordestina", hours: "Seg-Dom: 12h-22h" },
-    { id: 206, name: "Gran Bier", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 80, rating: 4.3, vibe: "Descontraído", cozinha: "Cervejaria", hours: "Seg-Sáb: 17h-00h" },
-    { id: 207, name: "Nazo Japanese Food", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 90, rating: 4.4, vibe: "Casual", cozinha: "Japonesa", hours: "Seg-Sáb: 11h30-15h / 18h-23h" },
-    { id: 208, name: "Coco Bambu", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 130, rating: 4.4, vibe: "Casual chique", cozinha: "Frutos do mar", hours: "Seg-Dom: 12h-00h" },
-    { id: 209, name: "Nau Frutos do Mar", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Aconchegante", cozinha: "Frutos do mar", hours: "Ter-Dom: 12h-15h / 19h-23h" },
-    { id: 210, name: "Fausto & Manoel", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 90, rating: 4.7, vibe: "Descontraído", cozinha: "Bar gastronômico", hours: "Ter-Sáb: 18h-00h" },
-    { id: 211, name: "BSB Grill", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.3, vibe: "Casual", cozinha: "Churrasco", hours: "Seg-Sáb: 12h-15h / 19h-23h" },
-    { id: 212, name: "Izzi Wine Garden", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 100, rating: 4.4, vibe: "Aconchegante", cozinha: "Wine bar", hours: "Ter-Sáb: 17h-00h" },
-    { id: 213, name: "Manzuá", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Casual chique", cozinha: "Frutos do mar", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 214, name: "L'Entrecôte de Paris", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 130, rating: 4.6, vibe: "Clássico", cozinha: "Francesa", hours: "Seg-Sáb: 12h-15h / 19h-23h" },
+    { id: 201, name: "Santé 13", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 90, rating: 4.5, vibe: "Aconchegante", cozinha: "Bistrô", cuisineKey: "bistro", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 18h-23h" },
+    { id: 202, name: "Sallva", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 100, rating: 4.5, vibe: "Casual chique", cozinha: "Brasileira", cuisineKey: "brasileira", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 203, name: "Caminito Parrilla", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.4, vibe: "Descontraído", cozinha: "Argentina", cuisineKey: "argentina", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
+    { id: 204, name: "Nino Cucina", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Aconchegante", cozinha: "Italiana", cuisineKey: "italiana", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
+    { id: 205, name: "Mangai", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 85, rating: 4.5, vibe: "Regional", cozinha: "Nordestina", cuisineKey: "nordestina", openH: 12, closeH: 22, hours: "Seg-Dom: 12h-22h" },
+    { id: 206, name: "Gran Bier", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 80, rating: 4.3, vibe: "Descontraído", cozinha: "Cervejaria", cuisineKey: "cervejaria", openH: 17, closeH: 24, hours: "Seg-Sáb: 17h-00h" },
+    { id: 207, name: "Nazo Japanese Food", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 90, rating: 4.4, vibe: "Casual", cozinha: "Japonesa", cuisineKey: "japonesa", openH: 11, closeH: 23, hours: "Seg-Sáb: 11h30-15h / 18h-23h" },
+    { id: 208, name: "Coco Bambu", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 130, rating: 4.4, vibe: "Casual chique", cozinha: "Frutos do mar", cuisineKey: "frutos-do-mar", openH: 12, closeH: 24, hours: "Seg-Dom: 12h-00h" },
+    { id: 209, name: "Nau Frutos do Mar", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Aconchegante", cozinha: "Frutos do mar", cuisineKey: "frutos-do-mar", openH: 12, closeH: 23, hours: "Ter-Dom: 12h-15h / 19h-23h" },
+    { id: 210, name: "Fausto & Manoel", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 90, rating: 4.7, vibe: "Descontraído", cozinha: "Bar gastronômico", cuisineKey: "bar-gastronomico", openH: 18, closeH: 24, hours: "Ter-Sáb: 18h-00h" },
+    { id: 211, name: "BSB Grill", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.3, vibe: "Casual", cozinha: "Churrasco", cuisineKey: "churrasco", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 19h-23h" },
+    { id: 212, name: "Izzi Wine Garden", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 100, rating: 4.4, vibe: "Aconchegante", cozinha: "Wine bar", cuisineKey: "wine-bar", openH: 17, closeH: 24, hours: "Ter-Sáb: 17h-00h" },
+    { id: 213, name: "Manzuá", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Casual chique", cozinha: "Frutos do mar", cuisineKey: "frutos-do-mar", openH: 12, closeH: 23, hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 214, name: "L'Entrecôte de Paris", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 130, rating: 4.6, vibe: "Clássico", cozinha: "Francesa", cuisineKey: "francesa", openH: 12, closeH: 23, hours: "Seg-Sáb: 12h-15h / 19h-23h" },
     // Bars
-    { id: 301, name: "The Old Barr", type: "bar", bairro: "Asa Sul", price: 100, rating: 4.6, vibe: "Sofisticado", cozinha: "Coquetelaria autoral", hours: "Ter-Sáb: 18h-01h" },
-    { id: 302, name: "Boteco Boa Praça", type: "bar", bairro: "Asa Sul", price: 70, rating: 4.4, vibe: "Descontraído", cozinha: "Boteco", hours: "Seg-Dom: 17h-00h" },
-    { id: 303, name: "Caju Limão", type: "bar", bairro: "Asa Norte", price: 80, rating: 4.5, vibe: "Animado", cozinha: "Drinks", hours: "Ter-Sáb: 18h-01h" },
-    { id: 304, name: "Boteco Sabiá", type: "bar", bairro: "Asa Norte", price: 65, rating: 4.4, vibe: "Boêmio", cozinha: "Boteco", hours: "Seg-Sáb: 17h-00h" },
-    { id: 305, name: "Mercadito", type: "bar", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Moderno", cozinha: "Mexicana", hours: "Ter-Sáb: 18h-01h" },
-    { id: 306, name: "Responsa Bar", type: "bar", bairro: "Asa Sul", price: 85, rating: 4.4, vibe: "Descontraído", cozinha: "Bar gastronômico", hours: "Ter-Sáb: 18h-01h" },
-    { id: 307, name: "Patinho Feio", type: "bar", bairro: "Asa Sul", price: 75, rating: 4.5, vibe: "Alternativo", cozinha: "Drinks", hours: "Ter-Sáb: 19h-02h" },
-    { id: 308, name: "Dudu Bar", type: "bar", bairro: "Lago Norte", price: 110, rating: 4.6, vibe: "Sofisticado", cozinha: "Coquetelaria premium", hours: "Ter-Dom: 18h-02h" },
-    { id: 309, name: "313 Drinks", type: "bar", bairro: "Asa Norte", price: 90, rating: 4.5, vibe: "Cocktail bar", cozinha: "Drinks autorais", hours: "Ter-Sáb: 19h-02h" }
+    { id: 301, name: "The Old Barr", type: "bar", bairro: "Asa Sul", price: 100, rating: 4.6, vibe: "Sofisticado", cozinha: "Coquetelaria autoral", cuisineKey: "coquetelaria", openH: 18, closeH: 25, hours: "Ter-Sáb: 18h-01h" },
+    { id: 302, name: "Boteco Boa Praça", type: "bar", bairro: "Asa Sul", price: 70, rating: 4.4, vibe: "Descontraído", cozinha: "Boteco", cuisineKey: "boteco", openH: 17, closeH: 24, hours: "Seg-Dom: 17h-00h" },
+    { id: 303, name: "Caju Limão", type: "bar", bairro: "Asa Norte", price: 80, rating: 4.5, vibe: "Animado", cozinha: "Drinks", cuisineKey: "coquetelaria", openH: 18, closeH: 25, hours: "Ter-Sáb: 18h-01h" },
+    { id: 304, name: "Boteco Sabiá", type: "bar", bairro: "Asa Norte", price: 65, rating: 4.4, vibe: "Boêmio", cozinha: "Boteco", cuisineKey: "boteco", openH: 17, closeH: 24, hours: "Seg-Sáb: 17h-00h" },
+    { id: 305, name: "Mercadito", type: "bar", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Moderno", cozinha: "Mexicana", cuisineKey: "mexicana", openH: 18, closeH: 25, hours: "Ter-Sáb: 18h-01h" },
+    { id: 306, name: "Responsa Bar", type: "bar", bairro: "Asa Sul", price: 85, rating: 4.4, vibe: "Descontraído", cozinha: "Bar gastronômico", cuisineKey: "bar-gastronomico", openH: 18, closeH: 25, hours: "Ter-Sáb: 18h-01h" },
+    { id: 307, name: "Patinho Feio", type: "bar", bairro: "Asa Sul", price: 75, rating: 4.5, vibe: "Alternativo", cozinha: "Drinks", cuisineKey: "coquetelaria", openH: 19, closeH: 26, hours: "Ter-Sáb: 19h-02h" },
+    { id: 308, name: "Dudu Bar", type: "bar", bairro: "Lago Norte", price: 110, rating: 4.6, vibe: "Sofisticado", cozinha: "Coquetelaria premium", cuisineKey: "coquetelaria", openH: 18, closeH: 26, hours: "Ter-Dom: 18h-02h" },
+    { id: 309, name: "313 Drinks", type: "bar", bairro: "Asa Norte", price: 90, rating: 4.5, vibe: "Cocktail bar", cozinha: "Drinks autorais", cuisineKey: "coquetelaria", openH: 19, closeH: 26, hours: "Ter-Sáb: 19h-02h" }
 ];
+
+// Filter state
+let filters = {
+    cuisine: '',
+    price: 'any',
+    neighborhood: '',
+    time: '',
+    currentType: 'restaurante'
+};
+
+function priceToRange(price) {
+    if (price < 80) return 'low';
+    if (price < 150) return 'mid';
+    if (price < 220) return 'high';
+    return 'luxury';
+}
+function priceLabel(range) {
+    return { low: '$', mid: '$$', high: '$$$', luxury: '$$$$' }[range] || '';
+}
 
 /* ═══════════════════════════════════════════════════
    STATE
@@ -2062,6 +2345,15 @@ function generateInviteCode() {
     return code;
 }
 function initials(name) { return (name || '').split(' ').filter(Boolean).map(n => n[0]).join('').substring(0,2).toUpperCase(); }
+function getBrasiliaGreeting() {
+    // Brasília: UTC-3 (sem horário de verão desde 2019)
+    const now = new Date();
+    const utcHours = now.getUTCHours();
+    const bsbHour = (utcHours - 3 + 24) % 24;
+    if (bsbHour >= 5 && bsbHour < 12) return 'Bom dia';
+    if (bsbHour >= 12 && bsbHour < 18) return 'Boa tarde';
+    return 'Boa noite';
+}
 
 /* ═══════════════════════════════════════════════════
    ENTRY
@@ -2113,6 +2405,7 @@ function showMainApp() {
     document.getElementById('headerAvatar').textContent = initials(state.user.name);
     const firstName = state.user.name.split(' ')[0];
     document.getElementById('greetingName').textContent = firstName.toLowerCase();
+    document.getElementById('greetingLabel').textContent = getBrasiliaGreeting();
     document.getElementById('inviteDisplay').textContent = state.inviteCode;
 
     const di = document.getElementById('roleDate');
@@ -2169,7 +2462,76 @@ function filterExplore(type, btn) {
     btn.classList.add('active');
     const tiers = document.getElementById('exploreTiers');
     tiers.style.display = type === 'restaurante' ? 'flex' : 'none';
+    filters.currentType = type;
     renderExplore(type);
+}
+
+/* ═══════════════════════════════════════════════════
+   ADVANCED FILTERS
+   ═══════════════════════════════════════════════════ */
+function toggleFilters() {
+    const panel = document.getElementById('filtersPanel');
+    const btn = document.getElementById('filtersToggleBtn');
+    panel.classList.toggle('open');
+    btn.classList.toggle('active');
+}
+function setPriceFilter(val, btn) {
+    btn.parentElement.querySelectorAll('.price-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    filters.price = val;
+    onFilterChange();
+}
+function setNowTime() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('filterTime').value = `${hh}:${mm}`;
+    onFilterChange();
+}
+function onFilterChange() {
+    filters.cuisine = document.getElementById('filterCuisine').value;
+    filters.neighborhood = document.getElementById('filterNeighborhood').value;
+    filters.time = document.getElementById('filterTime').value;
+    updateFiltersCount();
+}
+function updateFiltersCount() {
+    const active = [filters.cuisine, filters.neighborhood, filters.time, filters.price !== 'any' ? filters.price : ''].filter(Boolean).length;
+    document.getElementById('filtersCount').textContent = active > 0 ? `· ${active} ${active === 1 ? 'filtro' : 'filtros'}` : '';
+}
+function clearFilters() {
+    filters = { cuisine: '', price: 'any', neighborhood: '', time: '', currentType: filters.currentType };
+    document.getElementById('filterCuisine').value = '';
+    document.getElementById('filterNeighborhood').value = '';
+    document.getElementById('filterTime').value = '';
+    document.querySelectorAll('.price-chip').forEach((c, i) => {
+        c.classList.remove('active');
+        if (i === 0) c.classList.add('active');
+    });
+    updateFiltersCount();
+    renderExplore(filters.currentType);
+    document.getElementById('googleResultsSection').style.display = 'none';
+}
+function applyFilters() {
+    renderExplore(filters.currentType);
+    if (googleApiReady()) {
+        runGoogleSearch();
+    } else {
+        document.getElementById('googleBanner').style.display = 'flex';
+    }
+}
+
+function matchesFilters(v) {
+    if (filters.cuisine && v.cuisineKey !== filters.cuisine) return false;
+    if (filters.neighborhood && v.bairro !== filters.neighborhood) return false;
+    if (filters.price !== 'any' && priceToRange(v.price) !== filters.price) return false;
+    if (filters.time) {
+        const [h, m] = filters.time.split(':').map(Number);
+        const t = h + m/60;
+        if (v.openH !== undefined && v.closeH !== undefined) {
+            if (t < v.openH || t >= v.closeH) return false;
+        }
+    }
+    return true;
 }
 function filterTier(tier, btn, context) {
     btn.parentElement.querySelectorAll('.tier-btn').forEach(s => s.classList.remove('active'));
@@ -2202,27 +2564,55 @@ function renderVenues(typeFilter) {
     `).join('');
 }
 function renderExplore(typeFilter) {
-    typeFilter = typeFilter || 'restaurante';
+    typeFilter = typeFilter || filters.currentType || 'restaurante';
+    filters.currentType = typeFilter;
     let venues = allVenues().filter(v => v.type === typeFilter);
     if (typeFilter === 'restaurante' && state.currentRole.filterTier !== 'all') {
         venues = venues.filter(v => v.tier === state.currentRole.filterTier);
     }
-    document.getElementById('exploreList').innerHTML = venues.map(v => `
-        <div class="venue-item">
-            <div class="venue-head">
-                <div>
-                    <div class="venue-name">${v.name}</div>
-                    <div class="venue-meta">${v.cozinha || v.type} · ${v.bairro}</div>
+    venues = venues.filter(matchesFilters);
+
+    const list = document.getElementById('exploreList');
+    const header = document.getElementById('exploreResultsHeader');
+    const banner = document.getElementById('googleBanner');
+
+    if (venues.length === 0) {
+        list.innerHTML = `
+            <div class="empty">
+                <div class="empty-mark">—</div>
+                <h3>Nada encontrado na curadoria</h3>
+                <p>Ajuste os filtros ou busque no Google Maps para mais opções.</p>
+                <button class="btn btn-outline btn-sm" onclick="openGoogleSetup()">${googleApiReady() ? 'Buscar no Google' : 'Ativar Google Places'}</button>
+            </div>`;
+        header.style.display = 'none';
+    } else {
+        header.style.display = 'block';
+        list.innerHTML = venues.map(v => `
+            <div class="venue-item">
+                <div class="venue-head">
+                    <div>
+                        <div class="venue-name">${v.name}</div>
+                        <div class="venue-meta">${v.cozinha || v.type} · ${v.bairro}</div>
+                    </div>
+                    <div class="venue-price">${priceLabel(priceToRange(v.price))} · R$ ${v.price}</div>
                 </div>
-                <div class="venue-price">R$ ${v.price}</div>
+                <div class="venue-details">
+                    <span class="venue-detail">${v.hours}</span>
+                    <span class="venue-detail">· ${v.vibe}</span>
+                    <span class="venue-detail">· ★ ${v.rating || '—'}</span>
+                    ${v.tier === 'high_end' ? '<span class="tag tag-dark" style="font-size:0.55rem; padding:0.2rem 0.5rem;">ALTA GASTRONOMIA</span>' : ''}
+                </div>
             </div>
-            <div class="venue-details">
-                <span class="venue-detail">${v.hours}</span>
-                <span class="venue-detail">· ${v.vibe}</span>
-                ${v.tier === 'high_end' ? '<span class="tag tag-dark" style="font-size:0.55rem; padding:0.2rem 0.5rem;">ALTA GASTRONOMIA</span>' : ''}
-            </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
+
+    // Show google banner if filters are active and api not yet set up
+    const hasFilters = filters.cuisine || filters.neighborhood || filters.time || filters.price !== 'any';
+    if (hasFilters && !googleApiReady()) {
+        banner.style.display = 'flex';
+    } else if (!hasFilters) {
+        banner.style.display = 'none';
+    }
 }
 function selectVenue(id) {
     const v = allVenues().find(v => v.id === id);
@@ -2735,6 +3125,148 @@ function shareRole(id) {
 function subscribe(plan) {
     const p = { mensal: 'R$ 15,90', trimestral: 'R$ 39,90', anual: 'R$ 129,90' };
     showToast(`${plan.toUpperCase()} · ${p[plan]} · em breve`);
+}
+
+/* ═══════════════════════════════════════════════════
+   GOOGLE PLACES INTEGRATION
+   ═══════════════════════════════════════════════════ */
+let googleMapsLoaded = false;
+let googlePlacesService = null;
+
+function googleApiReady() {
+    return !!localStorage.getItem('gerencia_google_api_key');
+}
+
+function openGoogleSetup() {
+    const existing = localStorage.getItem('gerencia_google_api_key');
+    if (existing) {
+        document.getElementById('googleApiKeyInput').value = existing;
+        document.getElementById('removeKeyBtn').style.display = 'block';
+    } else {
+        document.getElementById('removeKeyBtn').style.display = 'none';
+    }
+    document.getElementById('modalGoogleSetup').classList.add('active');
+}
+
+function saveGoogleApiKey() {
+    const key = document.getElementById('googleApiKeyInput').value.trim();
+    if (!key || !key.startsWith('AIza')) {
+        showToast('Chave inválida (deve começar com AIza)');
+        return;
+    }
+    localStorage.setItem('gerencia_google_api_key', key);
+    closeModalById('modalGoogleSetup');
+    showToast('Chave salva. Carregando API...');
+    loadGoogleMaps(key, () => {
+        showToast('Google Places ativado');
+        document.getElementById('googleBanner').style.display = 'none';
+        runGoogleSearch();
+    });
+}
+
+function removeGoogleApiKey() {
+    if (!confirm('Remover a chave da API?')) return;
+    localStorage.removeItem('gerencia_google_api_key');
+    googleMapsLoaded = false;
+    googlePlacesService = null;
+    const script = document.getElementById('google-maps-script');
+    if (script) script.remove();
+    closeModalById('modalGoogleSetup');
+    showToast('Chave removida');
+    document.getElementById('googleResultsSection').style.display = 'none';
+}
+
+function loadGoogleMaps(key, callback) {
+    if (googleMapsLoaded) { callback(); return; }
+    window._gerenciaGoogleCallback = () => {
+        googleMapsLoaded = true;
+        const mapDiv = document.createElement('div');
+        mapDiv.style.display = 'none';
+        document.body.appendChild(mapDiv);
+        // Brasília center: -15.7801, -47.9292
+        const map = new google.maps.Map(mapDiv, { center: { lat: -15.7801, lng: -47.9292 }, zoom: 13 });
+        googlePlacesService = new google.maps.places.PlacesService(map);
+        callback();
+    };
+    const script = document.createElement('script');
+    script.id = 'google-maps-script';
+    script.async = true;
+    script.defer = true;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&libraries=places&callback=_gerenciaGoogleCallback`;
+    script.onerror = () => showToast('Erro ao carregar Google Maps. Verifique a chave.');
+    document.head.appendChild(script);
+}
+
+function runGoogleSearch() {
+    if (!googleApiReady()) { openGoogleSetup(); return; }
+    if (!googleMapsLoaded) {
+        loadGoogleMaps(localStorage.getItem('gerencia_google_api_key'), runGoogleSearch);
+        return;
+    }
+    const section = document.getElementById('googleResultsSection');
+    const list = document.getElementById('googleResultsList');
+    section.style.display = 'block';
+    list.innerHTML = '<div class="loading-row">Buscando no Google Places</div>';
+
+    // Build query
+    const type = filters.currentType;
+    const cuisine = filters.cuisine;
+    const neighborhood = filters.neighborhood;
+    const cuisineNames = {
+        italiana: 'italiano', japonesa: 'japonês', francesa: 'francês', brasileira: 'brasileiro',
+        contemporanea: 'contemporâneo', steakhouse: 'steakhouse', churrasco: 'churrascaria',
+        'frutos-do-mar': 'frutos do mar', bistro: 'bistrô', mediterranea: 'mediterrâneo',
+        mexicana: 'mexicano', argentina: 'argentino', asiatica: 'asiático',
+        coreana: 'coreano', nordestina: 'nordestino', 'bar-gastronomico': 'bar gastronômico',
+        cervejaria: 'cervejaria', boteco: 'boteco', 'wine-bar': 'wine bar',
+        coquetelaria: 'cocktail bar'
+    };
+    let query = type === 'bar' ? 'bares' : 'restaurantes';
+    if (cuisine && cuisineNames[cuisine]) query = (type === 'bar' ? 'bar ' : 'restaurante ') + cuisineNames[cuisine];
+    if (neighborhood) query += ' ' + neighborhood;
+    query += ' Brasília DF';
+
+    const request = {
+        query: query,
+        location: new google.maps.LatLng(-15.7801, -47.9292),
+        radius: 20000,
+        type: type === 'bar' ? 'bar' : 'restaurant'
+    };
+
+    googlePlacesService.textSearch(request, (results, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !results || results.length === 0) {
+            list.innerHTML = `<div class="empty" style="padding:2rem 1rem;"><div class="empty-mark">—</div><h3>Nenhum resultado</h3><p>Tente ajustar os filtros.</p></div>`;
+            return;
+        }
+        const priceMap = { low: [0,1], mid: [1,2], high: [2,3], luxury: [3,4] };
+        let filtered = results;
+        if (filters.price !== 'any' && priceMap[filters.price]) {
+            const [min, max] = priceMap[filters.price];
+            filtered = results.filter(r => r.price_level === undefined || (r.price_level >= min && r.price_level <= max));
+        }
+        if (filtered.length === 0) filtered = results;
+
+        list.innerHTML = filtered.slice(0, 12).map(r => {
+            const priceSymbol = r.price_level !== undefined ? '$'.repeat(Math.max(1, r.price_level)) : '';
+            const openNow = r.opening_hours && r.opening_hours.open_now;
+            return `
+                <div class="venue-item">
+                    <div class="venue-head">
+                        <div>
+                            <div class="venue-name">${r.name}</div>
+                            <div class="venue-meta">${r.formatted_address || r.vicinity || ''}</div>
+                        </div>
+                        <div class="venue-price">${priceSymbol}</div>
+                    </div>
+                    <div class="venue-details">
+                        <span class="venue-detail">★ ${r.rating || '—'} (${r.user_ratings_total || 0})</span>
+                        ${openNow === true ? '<span class="venue-detail" style="color:var(--success);">· Aberto</span>' : (openNow === false ? '<span class="venue-detail" style="color:var(--gold-deep);">· Fechado</span>' : '')}
+                        <span class="google-badge">Google</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    });
 }
 
 /* ═══════════════════════════════════════════════════
