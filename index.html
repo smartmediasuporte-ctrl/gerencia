@@ -3128,11 +3128,8 @@ function subscribe(plan) {
 }
 
 /* ═══════════════════════════════════════════════════
-   GOOGLE PLACES INTEGRATION
+   GOOGLE PLACES INTEGRATION — Places API (New) via fetch
    ═══════════════════════════════════════════════════ */
-let googleMapsLoaded = false;
-let googlePlacesService = null;
-
 function googleApiReady() {
     return !!localStorage.getItem('gerencia_google_api_key');
 }
@@ -3156,59 +3153,26 @@ function saveGoogleApiKey() {
     }
     localStorage.setItem('gerencia_google_api_key', key);
     closeModalById('modalGoogleSetup');
-    showToast('Chave salva. Carregando API...');
-    loadGoogleMaps(key, () => {
-        showToast('Google Places ativado');
-        document.getElementById('googleBanner').style.display = 'none';
-        runGoogleSearch();
-    });
+    showToast('Chave salva');
+    document.getElementById('googleBanner').style.display = 'none';
+    runGoogleSearch();
 }
 
 function removeGoogleApiKey() {
     if (!confirm('Remover a chave da API?')) return;
     localStorage.removeItem('gerencia_google_api_key');
-    googleMapsLoaded = false;
-    googlePlacesService = null;
-    const script = document.getElementById('google-maps-script');
-    if (script) script.remove();
     closeModalById('modalGoogleSetup');
     showToast('Chave removida');
     document.getElementById('googleResultsSection').style.display = 'none';
 }
 
-function loadGoogleMaps(key, callback) {
-    if (googleMapsLoaded) { callback(); return; }
-    window._gerenciaGoogleCallback = () => {
-        googleMapsLoaded = true;
-        const mapDiv = document.createElement('div');
-        mapDiv.style.display = 'none';
-        document.body.appendChild(mapDiv);
-        // Brasília center: -15.7801, -47.9292
-        const map = new google.maps.Map(mapDiv, { center: { lat: -15.7801, lng: -47.9292 }, zoom: 13 });
-        googlePlacesService = new google.maps.places.PlacesService(map);
-        callback();
-    };
-    const script = document.createElement('script');
-    script.id = 'google-maps-script';
-    script.async = true;
-    script.defer = true;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&libraries=places&callback=_gerenciaGoogleCallback`;
-    script.onerror = () => showToast('Erro ao carregar Google Maps. Verifique a chave.');
-    document.head.appendChild(script);
-}
-
-function runGoogleSearch() {
+async function runGoogleSearch() {
     if (!googleApiReady()) { openGoogleSetup(); return; }
-    if (!googleMapsLoaded) {
-        loadGoogleMaps(localStorage.getItem('gerencia_google_api_key'), runGoogleSearch);
-        return;
-    }
     const section = document.getElementById('googleResultsSection');
     const list = document.getElementById('googleResultsList');
     section.style.display = 'block';
     list.innerHTML = '<div class="loading-row">Buscando no Google Places</div>';
 
-    // Build query
     const type = filters.currentType;
     const cuisine = filters.cuisine;
     const neighborhood = filters.neighborhood;
@@ -3226,47 +3190,84 @@ function runGoogleSearch() {
     if (neighborhood) query += ' ' + neighborhood;
     query += ' Brasília DF';
 
-    const request = {
-        query: query,
-        location: new google.maps.LatLng(-15.7801, -47.9292),
-        radius: 20000,
-        type: type === 'bar' ? 'bar' : 'restaurant'
+    const priceMap = { low: [1,2], mid: [2,3], high: [3,4], luxury: [4,4] };
+    const body = {
+        textQuery: query,
+        languageCode: 'pt-BR',
+        regionCode: 'BR',
+        maxResultCount: 15,
+        locationBias: {
+            circle: {
+                center: { latitude: -15.7801, longitude: -47.9292 },
+                radius: 20000.0
+            }
+        }
     };
+    if (type === 'bar') body.includedType = 'bar';
+    else body.includedType = 'restaurant';
+    if (filters.price !== 'any' && priceMap[filters.price]) {
+        body.priceLevels = priceMap[filters.price].map(n => ['PRICE_LEVEL_FREE','PRICE_LEVEL_INEXPENSIVE','PRICE_LEVEL_MODERATE','PRICE_LEVEL_EXPENSIVE','PRICE_LEVEL_VERY_EXPENSIVE'][n]);
+    }
 
-    googlePlacesService.textSearch(request, (results, status) => {
-        if (status !== google.maps.places.PlacesServiceStatus.OK || !results || results.length === 0) {
+    try {
+        const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Goog-Api-Key': localStorage.getItem('gerencia_google_api_key'),
+                'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.priceLevel,places.currentOpeningHours.openNow,places.regularOpeningHours.weekdayDescriptions,places.primaryTypeDisplayName'
+            },
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            const msg = (err.error && err.error.message) || 'Erro na API';
+            list.innerHTML = `<div class="empty" style="padding:2rem 1rem;"><div class="empty-mark">!</div><h3>Falha na busca</h3><p>${msg.substring(0, 120)}</p></div>`;
+            return;
+        }
+
+        const data = await response.json();
+        const places = data.places || [];
+        if (places.length === 0) {
             list.innerHTML = `<div class="empty" style="padding:2rem 1rem;"><div class="empty-mark">—</div><h3>Nenhum resultado</h3><p>Tente ajustar os filtros.</p></div>`;
             return;
         }
-        const priceMap = { low: [0,1], mid: [1,2], high: [2,3], luxury: [3,4] };
-        let filtered = results;
-        if (filters.price !== 'any' && priceMap[filters.price]) {
-            const [min, max] = priceMap[filters.price];
-            filtered = results.filter(r => r.price_level === undefined || (r.price_level >= min && r.price_level <= max));
-        }
-        if (filtered.length === 0) filtered = results;
 
-        list.innerHTML = filtered.slice(0, 12).map(r => {
-            const priceSymbol = r.price_level !== undefined ? '$'.repeat(Math.max(1, r.price_level)) : '';
-            const openNow = r.opening_hours && r.opening_hours.open_now;
+        const priceLevelMap = {
+            'PRICE_LEVEL_FREE': '',
+            'PRICE_LEVEL_INEXPENSIVE': '$',
+            'PRICE_LEVEL_MODERATE': '$$',
+            'PRICE_LEVEL_EXPENSIVE': '$$$',
+            'PRICE_LEVEL_VERY_EXPENSIVE': '$$$$'
+        };
+
+        list.innerHTML = places.map(p => {
+            const name = p.displayName && p.displayName.text || 'Sem nome';
+            const addr = p.formattedAddress || '';
+            const priceSymbol = priceLevelMap[p.priceLevel] || '';
+            const openNow = p.currentOpeningHours && p.currentOpeningHours.openNow;
+            const primaryType = p.primaryTypeDisplayName && p.primaryTypeDisplayName.text || '';
             return `
                 <div class="venue-item">
                     <div class="venue-head">
                         <div>
-                            <div class="venue-name">${r.name}</div>
-                            <div class="venue-meta">${r.formatted_address || r.vicinity || ''}</div>
+                            <div class="venue-name">${name}</div>
+                            <div class="venue-meta">${primaryType}${primaryType && addr ? ' · ' : ''}${addr.substring(0, 40)}</div>
                         </div>
                         <div class="venue-price">${priceSymbol}</div>
                     </div>
                     <div class="venue-details">
-                        <span class="venue-detail">★ ${r.rating || '—'} (${r.user_ratings_total || 0})</span>
-                        ${openNow === true ? '<span class="venue-detail" style="color:var(--success);">· Aberto</span>' : (openNow === false ? '<span class="venue-detail" style="color:var(--gold-deep);">· Fechado</span>' : '')}
+                        <span class="venue-detail">★ ${p.rating || '—'} (${p.userRatingCount || 0})</span>
+                        ${openNow === true ? '<span class="venue-detail" style="color:var(--success);">· Aberto</span>' : (openNow === false ? '<span class="venue-detail" style="color:var(--gold-deep);">· Fechado</span>' : ''}
                         <span class="google-badge">Google</span>
                     </div>
                 </div>
             `;
         }).join('');
-    });
+    } catch (e) {
+        list.innerHTML = `<div class="empty" style="padding:2rem 1rem;"><div class="empty-mark">!</div><h3>Erro de conexão</h3><p>${e.message}</p></div>`;
+    }
 }
 
 /* ═══════════════════════════════════════════════════
