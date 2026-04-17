@@ -3,99 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GERÊNCIA — Organiza o role, não passe vergonha</title>
+<title>GERÊNCIA — Private Members Society</title>
+<meta name="description" content="Uma sociedade privada para organizar saídas entre pares.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════════
+   RESET
+   ═══════════════════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
 :root {
-    --bg: #F5F0EB;
-    --bg-card: #FFFFFF;
-    --bg-alt: #EDE8E1;
-    --bg-elevated: #F9F5F0;
-    --border: #E0D9D1;
-    --border-strong: #CEC4B8;
-    --text: #1A1A1A;
-    --text-soft: #3A3530;
-    --text-secondary: #6B6560;
-    --text-muted: #9C958E;
-    --accent: #C2703E;
-    --accent-dark: #A85A2E;
-    --accent-light: #F3E8DE;
-    --accent-glow: rgba(194,112,62,0.12);
-    --dark: #1A1A1A;
-    --success: #3A7D5F;
-    --success-bg: #E3EFE8;
-    --warning: #C79245;
-    --radius: 16px;
-    --radius-sm: 12px;
-    --radius-xs: 8px;
-    --shadow-sm: 0 2px 8px rgba(26,26,26,0.04);
-    --shadow: 0 4px 20px rgba(26,26,26,0.06);
-    --shadow-lg: 0 8px 32px rgba(26,26,26,0.08);
-    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --cream: #F5F1EA;
+    --cream-dark: #EBE5DB;
+    --cream-deep: #E2DBCE;
+    --paper: #FFFFFF;
+    --ink: #0D0C0A;
+    --ink-soft: #1F1D1A;
+    --ink-70: rgba(13,12,10,0.72);
+    --ink-50: rgba(13,12,10,0.52);
+    --ink-30: rgba(13,12,10,0.32);
+    --ink-10: rgba(13,12,10,0.10);
+    --ink-05: rgba(13,12,10,0.05);
+    --gold: #A88A5B;
+    --gold-soft: #C4A67A;
+    --gold-deep: #8A6E43;
+    --gold-tint: rgba(168,138,91,0.10);
+    --success: #3D6B51;
+    --radius: 2px;
+    --radius-sm: 2px;
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
-    font-family: 'DM Sans', 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    font-feature-settings: 'ss01', 'cv11';
 }
 a { text-decoration: none; color: inherit; }
-input, textarea, select, button { font-family: inherit; }
-button { cursor: pointer; background: none; border: none; color: inherit; }
+input, textarea, select, button { font-family: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+svg { display: block; }
 
+/* Typography */
+.serif { font-family: var(--serif); font-feature-settings: 'ss01'; letter-spacing: -0.01em; }
+
+/* ═══════════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════════ */
 .app {
     max-width: 480px;
     margin: 0 auto;
     min-height: 100vh;
     position: relative;
-    padding-bottom: 110px;
-    background: var(--bg);
+    padding-bottom: 88px;
+    background: var(--cream);
 }
 @media (min-width: 481px) {
-    body { background: #EDE8E1; padding: 2rem 0; }
-    .app { border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); overflow: hidden; min-height: calc(100vh - 4rem); }
+    body { background: var(--cream-dark); padding: 2rem 0; }
+    .app {
+        box-shadow: 0 40px 100px rgba(13,12,10,0.08), 0 0 0 1px var(--ink-10);
+        min-height: calc(100vh - 4rem);
+    }
 }
 
+/* ═══════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════ */
 .header {
-    padding: 1.2rem 1.5rem;
+    padding: 1.4rem 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(245, 240, 235, 0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(245, 241, 234, 0.88);
+    backdrop-filter: blur(24px) saturate(1.2);
+    border-bottom: 0.5px solid var(--ink-10);
 }
-.header-logo {
-    font-family: 'DM Sans', sans-serif;
+.logotype {
+    font-family: var(--serif);
     font-size: 1.15rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    color: var(--text);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
 }
-.header-logo span { color: var(--accent); }
-.header-user {
-    width: 40px; height: 40px;
-    background: var(--accent-light);
-    border: 2px solid var(--accent);
-    border-radius: 50%;
+.logotype .dot { color: var(--gold); font-family: var(--serif); }
+.header-actions { display: flex; align-items: center; gap: 1rem; }
+.icon-btn {
+    width: 34px; height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--accent);
+    color: var(--ink);
     transition: var(--transition);
+    position: relative;
 }
-.header-user:hover { background: var(--accent); color: white; }
+.icon-btn:hover { color: var(--gold); }
+.icon-btn .badge {
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+}
+.avatar-header {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    letter-spacing: 0.02em;
+}
+.avatar-header:hover { background: var(--gold); }
 
+/* ═══════════════════════════════════════════════════
+   BOTTOM NAV
+   ═══════════════════════════════════════════════════ */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -103,15 +143,13 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     transform: translateX(-50%);
     width: 100%;
     max-width: 480px;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(24px);
+    border-top: 0.5px solid var(--ink-10);
     display: flex;
     justify-content: space-around;
-    padding: 0.8rem 0 1.2rem;
+    padding: 0.8rem 0 1.3rem;
     z-index: 100;
-}
-@media (min-width: 481px) {
-    .bottom-nav { border-radius: 0 0 24px 24px; }
 }
 .nav-item {
     display: flex;
@@ -120,1217 +158,1971 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     gap: 0.35rem;
     padding: 0.3rem 1rem;
     transition: var(--transition);
-    color: var(--text-muted);
+    color: var(--ink-50);
 }
-.nav-item.active { color: var(--accent); }
-.nav-item.active .nav-icon { transform: translateY(-2px); }
-.nav-icon { font-size: 1.3rem; transition: transform 0.25s; }
-.nav-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.nav-item.active { color: var(--ink); }
+.nav-item.active .nav-dot { opacity: 1; }
+.nav-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+}
+.nav-label {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+.nav-dot {
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0;
+    transition: var(--transition);
+    margin-top: 1px;
+}
 
-.screen { display: none; padding: 1.5rem; animation: fadeIn 0.3s ease; }
+/* ═══════════════════════════════════════════════════
+   SCREENS
+   ═══════════════════════════════════════════════════ */
+.screen { display: none; padding: 1.75rem; animation: fadeIn 0.4s ease; }
 .screen.active { display: block; }
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.section-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--accent);
+/* ═══════════════════════════════════════════════════
+   COMMON
+   ═══════════════════════════════════════════════════ */
+.eyebrow {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--ink-50);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.25em;
+    margin-bottom: 0.6rem;
 }
-.section-title {
-    font-size: 1.7rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    line-height: 1.15;
+.eyebrow.gold { color: var(--gold-deep); }
+.display {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1.05;
     letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
 }
+.display .italic { font-style: italic; font-weight: 400; color: var(--gold-deep); }
 
-.card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.3rem;
-    margin-bottom: 1rem;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
+.divider-ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
 }
+.divider-ornament::before,
+.divider-ornament::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--ink-10);
+}
+.divider-ornament .mark {
+    font-family: var(--serif);
+    font-size: 0.9rem;
+    color: var(--gold);
+    font-style: italic;
+}
+.line { height: 0.5px; background: var(--ink-10); margin: 1.5rem 0; }
 
+/* ═══════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════ */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.95rem 1.8rem;
-    border-radius: var(--radius-sm);
-    font-weight: 700;
-    font-size: 0.9rem;
+    gap: 0.6rem;
+    padding: 1rem 1.8rem;
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     transition: var(--transition);
+    border: 0.5px solid transparent;
+    position: relative;
+    overflow: hidden;
 }
-.btn-primary { background: var(--dark); color: var(--bg); }
-.btn-primary:hover { background: #000; transform: translateY(-1px); box-shadow: var(--shadow); }
-.btn-accent { background: var(--accent); color: white; }
-.btn-accent:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); }
-.btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--text); }
-.btn-outline:hover { background: var(--text); color: var(--bg); }
-.btn-ghost { background: var(--accent-light); color: var(--accent); }
-.btn-ghost:hover { background: var(--accent); color: white; }
+.btn-dark {
+    background: var(--ink);
+    color: var(--cream);
+    border-color: var(--ink);
+}
+.btn-dark:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+}
+.btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--ink);
+}
+.btn-outline:hover {
+    background: var(--ink);
+    color: var(--cream);
+}
+.btn-gold {
+    background: var(--gold);
+    color: var(--cream);
+    border-color: var(--gold);
+}
+.btn-gold:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+.btn-ghost {
+    background: transparent;
+    color: var(--ink-70);
+    border-color: transparent;
+}
+.btn-ghost:hover { color: var(--gold-deep); }
 .btn-full { width: 100%; }
-.btn-sm { padding: 0.65rem 1.3rem; font-size: 0.82rem; }
+.btn-sm { padding: 0.75rem 1.4rem; font-size: 0.72rem; }
 
-.input-group { margin-bottom: 1rem; }
-.input-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-secondary);
+/* ═══════════════════════════════════════════════════
+   FORMS
+   ═══════════════════════════════════════════════════ */
+.field { margin-bottom: 1.4rem; }
+.field-label {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--ink-50);
     margin-bottom: 0.5rem;
     display: block;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
 }
-.input {
+.input, .textarea, .select {
     width: 100%;
-    padding: 0.9rem 1rem;
-    background: var(--bg-card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-size: 0.95rem;
+    padding: 0.95rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px solid var(--ink-30);
+    color: var(--ink);
+    font-size: 1rem;
     transition: var(--transition);
     outline: none;
     font-family: inherit;
 }
-.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-.input::placeholder { color: var(--text-muted); }
-select.input {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239C958E' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 2.5rem;
-}
-
-.tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.35rem 0.85rem;
-    border-radius: var(--radius-xs);
-    font-size: 0.7rem;
-    font-weight: 700;
-}
-.tag-accent { background: var(--accent-light); color: var(--accent); }
-.tag-success { background: var(--success-bg); color: var(--success); }
-.tag-dark { background: var(--dark); color: var(--bg); }
-.tag-muted { background: var(--bg-alt); color: var(--text-secondary); }
-
-.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
-
-.empty-state {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    background: var(--bg-card);
+.input:focus, .textarea:focus, .select:focus { border-bottom-color: var(--gold); }
+.input::placeholder, .textarea::placeholder { color: var(--ink-30); font-weight: 300; }
+.input-box {
+    padding: 0.95rem 1rem;
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
     border-radius: var(--radius);
-    border: 1px dashed var(--border-strong);
 }
-.empty-state .empty-icon { font-size: 2.6rem; margin-bottom: 0.8rem; }
-.empty-state h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
-.empty-state p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.3rem; }
+.input-box:focus { border-color: var(--gold); }
 
+.tabs-segment {
+    display: flex;
+    margin-bottom: 1.75rem;
+    border-bottom: 0.5px solid var(--ink-10);
+}
+.tab-seg {
+    flex: 1;
+    padding: 1rem 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--ink-50);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: var(--transition);
+    border-bottom: 1px solid transparent;
+    margin-bottom: -0.5px;
+}
+.tab-seg.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ═══════════════════════════════════════════════════
+   AVATAR
+   ═══════════════════════════════════════════════════ */
 .avatar {
-    width: 40px; height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.8rem;
+    font-family: var(--serif);
+    font-weight: 600;
     flex-shrink: 0;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--cream);
+    letter-spacing: 0.02em;
 }
-.avatar-accent { background: var(--accent-light); color: var(--accent); border: 1.5px solid var(--accent); }
-.avatar-dark { background: var(--dark); color: var(--bg); }
-.avatar-soft { background: var(--bg-alt); color: var(--text-soft); border: 1px solid var(--border); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-xs { width: 28px; height: 28px; font-size: 0.65rem; }
+.avatar-sm { width: 38px; height: 38px; font-size: 0.8rem; }
+.avatar-md { width: 52px; height: 52px; font-size: 1rem; }
+.avatar-lg { width: 80px; height: 80px; font-size: 1.6rem; }
+.avatar-xl { width: 120px; height: 120px; font-size: 2.4rem; }
+.avatar-cream { background: var(--cream-deep); color: var(--ink); }
+.avatar-gold { background: var(--gold); color: var(--cream); }
 
-.onboarding {
+/* ═══════════════════════════════════════════════════
+   TAGS & CHIPS
+   ═══════════════════════════════════════════════════ */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--ink-30);
+    color: var(--ink-70);
+}
+.tag-gold { border-color: var(--gold); color: var(--gold-deep); background: var(--gold-tint); }
+.tag-dark { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.tag-cream { background: var(--cream-deep); border-color: transparent; }
+
+/* ═══════════════════════════════════════════════════
+   INVITE ENTRY
+   ═══════════════════════════════════════════════════ */
+.entry {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
+    position: relative;
+    background: var(--cream);
+}
+.entry-frame {
+    position: absolute;
+    inset: 1.5rem;
+    border: 0.5px solid var(--ink-10);
+    pointer-events: none;
+}
+.entry-corner {
+    position: absolute;
+    width: 14px; height: 14px;
+    border: 0.5px solid var(--gold);
+}
+.entry-corner.tl { top: 1.5rem; left: 1.5rem; border-right: none; border-bottom: none; }
+.entry-corner.tr { top: 1.5rem; right: 1.5rem; border-left: none; border-bottom: none; }
+.entry-corner.bl { bottom: 1.5rem; left: 1.5rem; border-right: none; border-top: none; }
+.entry-corner.br { bottom: 1.5rem; right: 1.5rem; border-left: none; border-top: none; }
+
+.entry-top {
     text-align: center;
+    margin-bottom: 3rem;
 }
-.onboarding-logo {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 2.6rem;
-    font-weight: 900;
-    color: var(--text);
-    letter-spacing: 0.12em;
-    margin-bottom: 0.5rem;
-}
-.onboarding-logo span { color: var(--accent); }
-.onboarding-sub {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-    letter-spacing: 0.3em;
+.entry-eyebrow {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--gold-deep);
+    letter-spacing: 0.4em;
     text-transform: uppercase;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+.entry-logo {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+}
+.entry-logo .dot { color: var(--gold); }
+.entry-tagline {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink-70);
+    line-height: 1.5;
+    max-width: 320px;
+    margin: 0 auto;
+    font-weight: 300;
+}
+
+.entry-form { max-width: 360px; margin: 0 auto; width: 100%; }
+.entry-footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 0.7rem;
+    color: var(--ink-50);
+    letter-spacing: 0.1em;
+    font-weight: 400;
+}
+.entry-footer .line-hair {
+    width: 40px; height: 0.5px;
+    background: var(--ink-30);
+    margin: 1.5rem auto;
+}
+
+.invite-input {
+    text-align: center;
+    letter-spacing: 0.3em;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    padding: 1.2rem 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   FEED
+   ═══════════════════════════════════════════════════ */
+.feed-greeting {
+    padding: 0.5rem 0 2rem;
+    border-bottom: 0.5px solid var(--ink-10);
+    margin-bottom: 2rem;
+}
+.feed-greeting .hello {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+.feed-greeting .hello .italic { font-style: italic; color: var(--gold-deep); }
+.feed-greeting .sub {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-50);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+}
+
+.feed-post {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: var(--transition);
+    position: relative;
+}
+.feed-post:hover { border-color: var(--ink-30); }
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+.post-identity { flex: 1; }
+.post-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: -0.005em;
+}
+.post-handle {
+    font-size: 0.75rem;
+    color: var(--ink-50);
+    margin-top: 0.1rem;
+}
+.post-time {
+    font-size: 0.68rem;
+    color: var(--ink-50);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     font-weight: 500;
 }
-.onboarding-form { width: 100%; max-width: 360px; }
-.onboarding-tabs {
-    display: flex;
-    margin-bottom: 2rem;
-    background: var(--bg-alt);
-    padding: 4px;
-    border-radius: var(--radius-sm);
-}
-.onboarding-tab {
-    flex: 1;
-    padding: 0.75rem 1rem;
-    border-radius: 9px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    transition: var(--transition);
-}
-.onboarding-tab.active {
-    background: var(--bg-card);
-    color: var(--text);
-    box-shadow: var(--shadow-sm);
-}
-.onboarding-tagline {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    margin-top: 2rem;
-    line-height: 1.6;
-}
-.onboarding-tagline span { color: var(--accent); font-weight: 700; }
 
-.greeting { margin-bottom: 2rem; }
-.greeting h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; }
-.greeting p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; }
-
-.quick-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-}
-.stat-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 1.1rem 0.8rem;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
-}
-.stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.stat-card h3 { font-size: 1.6rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
-.stat-card p { font-size: 0.62rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0.15rem; font-weight: 700; }
-
-.upcoming-date {
-    background: var(--bg-card);
-    border: 1.5px solid var(--accent);
-    border-radius: var(--radius);
-    padding: 1.3rem;
+.post-action {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.45;
     margin-bottom: 1rem;
-    box-shadow: 0 8px 24px var(--accent-glow);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+    color: var(--ink-soft);
+    font-weight: 300;
 }
-.upcoming-date::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--accent);
-}
-.upcoming-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-.upcoming-date h4 { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; }
-.upcoming-details { display: flex; flex-direction: column; gap: 0.55rem; }
-.upcoming-detail { display: flex; align-items: center; gap: 0.55rem; font-size: 0.88rem; color: var(--text-soft); }
-.upcoming-detail .icon { font-size: 1rem; width: 22px; text-align: center; }
-.upcoming-peers { display: flex; margin-top: 0.9rem; }
-.upcoming-peers .avatar { width: 30px; height: 30px; font-size: 0.65rem; margin-left: -6px; border: 2px solid var(--bg-card); }
-.upcoming-peers .avatar:first-child { margin-left: 0; }
+.post-action strong { font-weight: 500; color: var(--ink); }
+.post-action .place { color: var(--gold-deep); font-style: italic; font-weight: 400; }
 
+.post-meta {
+    display: flex;
+    gap: 1.25rem;
+    padding: 0.85rem 0;
+    border-top: 0.5px solid var(--ink-10);
+    border-bottom: 0.5px solid var(--ink-10);
+    margin-bottom: 1rem;
+}
+.post-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    color: var(--ink-70);
+}
+.post-meta-item .label {
+    font-size: 0.58rem;
+    color: var(--ink-50);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+.post-participants {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.participants-stack {
+    display: flex;
+    align-items: center;
+}
+.participants-stack .avatar { margin-left: -8px; border: 2px solid var(--paper); }
+.participants-stack .avatar:first-child { margin-left: 0; }
+.participants-count {
+    font-size: 0.72rem;
+    color: var(--ink-70);
+    margin-left: 0.5rem;
+}
+
+.post-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+.post-actions .btn { flex: 1; }
+
+/* ═══════════════════════════════════════════════════
+   PROFILE
+   ═══════════════════════════════════════════════════ */
+.profile-hero {
+    text-align: center;
+    padding: 2rem 0;
+    border-bottom: 0.5px solid var(--ink-10);
+    margin-bottom: 2rem;
+    position: relative;
+}
+.profile-hero .avatar {
+    margin: 0 auto 1.25rem;
+    border: 0.5px solid var(--gold);
+    padding: 4px;
+    background: var(--cream);
+}
+.profile-hero .avatar img,
+.profile-hero .avatar.inner {
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--cream);
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+}
+.profile-name {
+    font-family: var(--serif);
+    font-size: 1.85rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.35rem;
+}
+.profile-handle {
+    font-size: 0.82rem;
+    color: var(--ink-50);
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+}
+.profile-bio {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-70);
+    max-width: 300px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.5;
+    font-weight: 300;
+}
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 0.5px solid var(--ink-10);
+    border-bottom: 0.5px solid var(--ink-10);
+    margin-bottom: 1.5rem;
+}
+.profile-stat { text-align: center; }
+.profile-stat-num {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+.profile-stat-label {
+    font-size: 0.58rem;
+    color: var(--ink-50);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-top: 0.2rem;
+    font-weight: 500;
+}
+.profile-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.profile-section {
+    margin-bottom: 2rem;
+}
+.profile-section-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+.profile-section-title .count {
+    font-size: 0.7rem;
+    color: var(--ink-50);
+    font-family: var(--sans);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+}
+
+.friend-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.85rem 0;
+    border-bottom: 0.5px solid var(--ink-10);
+    cursor: pointer;
+    transition: var(--transition);
+}
+.friend-row:last-child { border-bottom: none; }
+.friend-row:hover { padding-left: 0.4rem; }
+.friend-info { flex: 1; }
+.friend-name { font-weight: 500; font-size: 0.92rem; }
+.friend-handle { font-size: 0.74rem; color: var(--ink-50); margin-top: 0.1rem; }
+.friend-mutual { font-size: 0.68rem; color: var(--gold-deep); font-style: italic; font-family: var(--serif); }
+
+/* ═══════════════════════════════════════════════════
+   CREATE ROLE (STEPPER)
+   ═══════════════════════════════════════════════════ */
 .create-steps {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
-    position: relative;
+    margin-bottom: 2.5rem;
     padding: 0 0.5rem;
+    position: relative;
 }
 .create-steps::before {
     content: '';
     position: absolute;
-    top: 17px;
-    left: 15%;
-    right: 15%;
-    height: 2px;
-    background: var(--border);
+    top: 10px;
+    left: 12%;
+    right: 12%;
+    height: 0.5px;
+    background: var(--ink-10);
 }
 .step {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.45rem;
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
-.step-dot {
-    width: 34px; height: 34px;
+.step-mark {
+    width: 20px; height: 20px;
     border-radius: 50%;
-    background: var(--bg-card);
-    border: 2px solid var(--border);
+    background: var(--cream);
+    border: 0.5px solid var(--ink-30);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: var(--text-muted);
     transition: var(--transition);
+    font-family: var(--serif);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--ink-50);
 }
-.step.active .step-dot {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-    box-shadow: 0 4px 12px var(--accent-glow);
+.step.active .step-mark { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+.step.done .step-mark { background: var(--gold); border-color: var(--gold); color: var(--cream); }
+.step-text {
+    font-size: 0.58rem;
+    color: var(--ink-50);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 500;
 }
-.step.done .step-dot { background: var(--dark); border-color: var(--dark); color: var(--bg); }
-.step-label { font-size: 0.62rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
-.step.active .step-label { color: var(--accent); }
-.step.done .step-label { color: var(--text); }
-.step-content { display: none; animation: fadeIn 0.3s ease; }
+.step.active .step-text { color: var(--ink); }
+
+.step-content { display: none; animation: fadeIn 0.4s ease; }
 .step-content.active { display: block; }
 
-.date-type-grid {
+.type-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
 }
-.date-type-card {
-    background: var(--bg-card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.4rem 1rem;
+.type-card {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 1.6rem 1rem;
     text-align: center;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
-}
-.date-type-card:hover { border-color: var(--border-strong); }
-.date-type-card.selected {
-    border-color: var(--accent);
-    background: var(--accent-light);
-    box-shadow: 0 4px 20px var(--accent-glow);
-}
-.date-type-card .type-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
-.date-type-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.2rem; }
-.date-type-card p { font-size: 0.72rem; color: var(--text-secondary); }
-
-.venue-filters {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.2rem;
-    overflow-x: auto;
-    padding: 0.2rem 0 0.5rem;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-.venue-filters::-webkit-scrollbar { display: none; }
-.filter-chip {
-    padding: 0.55rem 1.05rem;
-    border-radius: 100px;
-    font-size: 0.77rem;
-    font-weight: 600;
-    border: 1.5px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    white-space: nowrap;
-    transition: var(--transition);
-}
-.filter-chip.active { background: var(--dark); border-color: var(--dark); color: var(--bg); }
-.filter-chip.locked { background: var(--dark); color: var(--warning); border-color: var(--dark); }
-
-.venue-card {
-    background: var(--bg-card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.1rem;
-    margin-bottom: 0.75rem;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
-    width: 100%;
-    text-align: left;
-}
-.venue-card:hover { border-color: var(--border-strong); }
-.venue-card.selected {
-    border-color: var(--accent);
-    background: var(--accent-light);
-    box-shadow: 0 4px 20px var(--accent-glow);
-}
-.venue-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.55rem;
-    gap: 0.5rem;
-}
-.venue-name { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
-.venue-type { font-size: 0.73rem; color: var(--text-secondary); margin-top: 0.15rem; }
-.venue-price { color: var(--accent); font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
-.venue-info { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.4rem; }
-.venue-info-item { display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: var(--text-secondary); }
-.venue-rating { color: var(--accent); font-weight: 700; }
-
-.add-custom-venue {
-    border: 1.5px dashed var(--border-strong);
-    background: transparent;
-    border-radius: var(--radius);
-    padding: 1rem;
-    text-align: center;
-    transition: var(--transition);
-    margin-bottom: 0.8rem;
-    width: 100%;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-.add-custom-venue:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
-
-.sub-filters {
-    display: flex;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-    padding: 4px;
-    background: var(--bg-alt);
-    border-radius: var(--radius-sm);
-}
-.sub-filter {
-    flex: 1;
-    padding: 0.55rem 0.8rem;
-    border-radius: 9px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    transition: var(--transition);
-    text-align: center;
-}
-.sub-filter.active { background: var(--bg-card); color: var(--text); box-shadow: var(--shadow-sm); }
-
-.premium-hero {
-    background: linear-gradient(135deg, var(--dark) 0%, #0d0d0d 100%);
-    color: var(--bg);
-    border-radius: var(--radius);
-    padding: 2rem 1.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-.premium-hero::before {
-    content: '';
-    position: absolute;
-    top: -50%; right: -30%;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-    border-radius: 50%;
-}
-.premium-lock-icon { font-size: 2.5rem; margin-bottom: 0.8rem; position: relative; z-index: 1; }
-.premium-hero h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; position: relative; z-index: 1; letter-spacing: -0.01em; }
-.premium-hero p { font-size: 0.88rem; color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; line-height: 1.5; position: relative; z-index: 1; }
-.premium-benefits { text-align: left; margin-bottom: 1.5rem; position: relative; z-index: 1; }
-.premium-benefit { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0; font-size: 0.85rem; color: rgba(255,255,255,0.85); }
-.premium-benefit::before { content: '✓'; color: var(--accent); font-weight: 700; font-size: 0.9rem; }
-.premium-plans { display: flex; flex-direction: column; gap: 0.6rem; position: relative; z-index: 1; }
-.premium-plan {
-    background: rgba(255,255,255,0.06);
-    border: 1.5px solid rgba(255,255,255,0.12);
-    border-radius: var(--radius-sm);
-    padding: 0.9rem 1.1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     transition: var(--transition);
     cursor: pointer;
 }
-.premium-plan:hover { border-color: var(--accent); background: rgba(194,112,62,0.1); }
-.premium-plan.featured { border-color: var(--accent); background: rgba(194,112,62,0.15); }
-.premium-plan-info { text-align: left; }
-.premium-plan-info h5 { font-size: 0.88rem; font-weight: 700; color: white; }
-.premium-plan-info p { font-size: 0.72rem; color: rgba(255,255,255,0.6); margin-top: 0.1rem; }
-.premium-plan-price { color: var(--accent); font-weight: 800; font-size: 0.92rem; }
+.type-card:hover { border-color: var(--ink-30); }
+.type-card.selected {
+    border-color: var(--gold);
+    background: var(--gold-tint);
+}
+.type-icon {
+    width: 32px; height: 32px;
+    margin: 0 auto 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-70);
+}
+.type-card.selected .type-icon { color: var(--gold-deep); }
+.type-name {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+}
+.type-desc {
+    font-size: 0.68rem;
+    color: var(--ink-50);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
 
-.locked-events { margin-top: 1rem; }
-.locked-event-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 1rem 1.2rem;
+/* ═══════════════════════════════════════════════════
+   VENUES
+   ═══════════════════════════════════════════════════ */
+.filter-chips {
+    display: flex;
+    gap: 0.45rem;
+    margin-bottom: 1.25rem;
+    overflow-x: auto;
+    padding-bottom: 0.3rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.filter-chips::-webkit-scrollbar { display: none; }
+.chip {
+    padding: 0.55rem 1rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 0.5px solid var(--ink-30);
+    background: transparent;
+    color: var(--ink-70);
+    white-space: nowrap;
+    transition: var(--transition);
+}
+.chip.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.chip.locked { color: var(--gold-deep); border-color: var(--gold); }
+.chip.locked.active { background: var(--gold); color: var(--cream); }
+
+.tier-toggle {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 0.5px solid var(--ink-10);
+}
+.tier-btn {
+    flex: 1;
+    padding: 0.85rem 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--ink-50);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: var(--transition);
+    border-bottom: 1px solid transparent;
+    margin-bottom: -0.5px;
+}
+.tier-btn.active { color: var(--ink); border-bottom-color: var(--gold); }
+
+.venue-item {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 1.3rem;
+    margin-bottom: 0.75rem;
+    transition: var(--transition);
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+.venue-item:hover { border-color: var(--ink-30); }
+.venue-item.selected {
+    border-color: var(--gold);
+    background: var(--gold-tint);
+}
+.venue-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+    gap: 0.5rem;
+}
+.venue-name {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+.venue-meta {
+    font-size: 0.7rem;
+    color: var(--ink-50);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.15rem;
+    font-weight: 500;
+}
+.venue-price {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    color: var(--gold-deep);
+    font-weight: 500;
+    white-space: nowrap;
+}
+.venue-details {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 0.75rem;
+    border-top: 0.5px solid var(--ink-05);
+    font-size: 0.72rem;
+    color: var(--ink-50);
+}
+.venue-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.add-custom {
+    background: transparent;
+    border: 0.5px dashed var(--ink-30);
+    padding: 1.1rem;
+    width: 100%;
+    text-align: center;
+    color: var(--ink-50);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: var(--transition);
+    margin-top: 0.5rem;
+}
+.add-custom:hover { border-color: var(--gold); color: var(--gold-deep); }
+
+/* ═══════════════════════════════════════════════════
+   MEMBERS / PREMIUM
+   ═══════════════════════════════════════════════════ */
+.members-hero {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 2.75rem 1.75rem;
+    position: relative;
+    margin: -1.75rem -1.75rem 2rem;
+    overflow: hidden;
+}
+.members-hero::before {
+    content: '';
+    position: absolute;
+    inset: 1rem;
+    border: 0.5px solid rgba(168,138,91,0.3);
+    pointer-events: none;
+}
+.members-hero-eyebrow {
+    font-size: 0.62rem;
+    color: var(--gold-soft);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.members-hero h2 {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 400;
+    line-height: 1.15;
+    text-align: center;
+    margin-bottom: 0.9rem;
+    letter-spacing: -0.01em;
+}
+.members-hero h2 .italic { font-style: italic; color: var(--gold-soft); }
+.members-hero p {
+    font-size: 0.88rem;
+    color: rgba(245,241,234,0.7);
+    text-align: center;
+    line-height: 1.55;
+    max-width: 320px;
+    margin: 0 auto 1.5rem;
+    font-weight: 300;
+}
+.members-benefits {
+    list-style: none;
+    margin-bottom: 1.75rem;
+    padding: 0 0.5rem;
+}
+.members-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    font-size: 0.82rem;
+    color: rgba(245,241,234,0.85);
+    font-weight: 300;
+    border-bottom: 0.5px solid rgba(245,241,234,0.08);
+}
+.members-benefits li:last-child { border-bottom: none; }
+.members-benefits .bullet {
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.plan-row {
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(168,138,91,0.2);
+    padding: 1.1rem 1.25rem;
     margin-bottom: 0.6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    transition: var(--transition);
+}
+.plan-row:hover { border-color: var(--gold); background: rgba(168,138,91,0.08); }
+.plan-row.featured {
+    border-color: var(--gold);
+    background: rgba(168,138,91,0.12);
+}
+.plan-info { text-align: left; }
+.plan-name { font-family: var(--serif); font-size: 1rem; font-weight: 500; color: var(--cream); }
+.plan-desc { font-size: 0.68rem; color: rgba(245,241,234,0.55); margin-top: 0.15rem; letter-spacing: 0.08em; }
+.plan-price { font-family: var(--serif); font-size: 1.15rem; color: var(--gold-soft); font-weight: 500; }
+
+.locked-list { margin-top: 0.5rem; }
+.locked-row {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     overflow: hidden;
 }
-.locked-event-card::after {
+.locked-row::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(245,240,235,0.55);
+    background: rgba(245,241,234,0.6);
     backdrop-filter: blur(3px);
     pointer-events: none;
 }
-.locked-event-info { position: relative; z-index: 1; text-align: left; }
-.locked-event-info h5 { font-size: 0.88rem; font-weight: 700; color: var(--text); }
-.locked-event-info p { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.1rem; }
-.locked-event-badge {
+.locked-row-info { position: relative; z-index: 1; }
+.locked-row-name { font-family: var(--serif); font-size: 0.95rem; font-weight: 500; }
+.locked-row-meta { font-size: 0.68rem; color: var(--ink-50); margin-top: 0.15rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.locked-row-badge {
     position: relative;
     z-index: 1;
     padding: 0.35rem 0.75rem;
-    background: var(--dark);
-    color: var(--warning);
-    border-radius: 100px;
-    font-size: 0.68rem;
-    font-weight: 700;
+    background: var(--ink);
+    color: var(--gold-soft);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
-.squad-member {
+/* ═══════════════════════════════════════════════════
+   CIRCLE
+   ═══════════════════════════════════════════════════ */
+.circle-intro {
+    padding: 1rem 0 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 0.5px solid var(--ink-10);
+}
+.circle-intro p {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-70);
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+.invite-panel {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+.invite-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0.75rem;
+    border: 0.5px solid rgba(168,138,91,0.3);
+    pointer-events: none;
+}
+.invite-panel-eyebrow {
+    font-size: 0.6rem;
+    color: var(--gold-soft);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+}
+.invite-panel h4 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+.invite-panel h4 .italic { font-style: italic; color: var(--gold-soft); }
+.invite-code-display {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold-soft);
+    letter-spacing: 0.3em;
+    padding: 1rem 0;
+    margin: 1rem 0;
+    border-top: 0.5px solid rgba(245,241,234,0.15);
+    border-bottom: 0.5px solid rgba(245,241,234,0.15);
+    position: relative;
+    z-index: 1;
+}
+.invite-panel p {
+    font-size: 0.72rem;
+    color: rgba(245,241,234,0.5);
+    letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════
+   CHECKBOX LIST
+   ═══════════════════════════════════════════════════ */
+.check-row {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
-}
-.squad-member:last-child { border-bottom: none; }
-.member-info { flex: 1; }
-.member-name { font-weight: 700; font-size: 0.95rem; }
-.member-status { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.1rem; }
-.member-score { text-align: right; }
-.member-score h5 { font-size: 1.15rem; font-weight: 800; color: var(--accent); }
-.member-score p { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; margin-top: 0.1rem; }
-
-.invite-box {
-    background: var(--dark);
-    color: var(--bg);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    text-align: center;
-    margin-top: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-.invite-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--accent);
-}
-.invite-box h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
-.invite-code {
-    font-family: 'Courier New', monospace;
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: 0.3em;
-    margin: 0.9rem 0;
-    background: rgba(255,255,255,0.06);
-    padding: 0.8rem;
-    border-radius: var(--radius-sm);
-    border: 1.5px dashed rgba(194,112,62,0.3);
-}
-.invite-box p { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
-
-.join-squad-box {
-    background: var(--bg-card);
-    border: 1.5px dashed var(--border-strong);
-    border-radius: var(--radius);
-    padding: 1.3rem;
-    margin-top: 1rem;
-}
-.join-squad-box h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.3rem; }
-.join-squad-box p { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; }
-
-.date-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.3rem;
-    margin-bottom: 1rem;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
+    padding: 0.95rem 1.1rem;
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+    margin-bottom: 0.5rem;
     cursor: pointer;
+    transition: var(--transition);
 }
-.date-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
-.date-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
-.date-card-title { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
-.date-card-details { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
-.date-detail { display: flex; align-items: center; gap: 0.55rem; font-size: 0.83rem; color: var(--text-secondary); }
-.date-participants { display: flex; justify-content: space-between; align-items: center; padding-top: 0.9rem; border-top: 1px solid var(--border); }
-.date-avatars { display: flex; }
-.date-avatars .avatar { width: 30px; height: 30px; font-size: 0.6rem; margin-left: -6px; border: 2px solid var(--bg-card); }
-.date-avatars .avatar:first-child { margin-left: 0; }
-.date-count { font-size: 0.77rem; color: var(--text-secondary); font-weight: 600; }
-
-.women-section { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-.women-label { font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.6rem; }
-.woman-item { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0; }
-.woman-info { display: flex; align-items: center; gap: 0.6rem; }
-.woman-avatar {
-    width: 28px; height: 28px;
-    background: var(--accent);
-    border-radius: 50%;
+.check-row.checked { border-color: var(--gold); background: var(--gold-tint); }
+.check-box {
+    width: 18px; height: 18px;
+    border: 0.5px solid var(--ink-30);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: white;
+    transition: var(--transition);
 }
-.woman-name { font-size: 0.85rem; font-weight: 600; }
-.woman-pair { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.1rem; }
+.check-row.checked .check-box { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+.check-row .avatar { border: 0.5px solid var(--ink-10); }
+.check-info { flex: 1; }
+.check-name { font-weight: 500; font-size: 0.92rem; }
+.check-sub { font-size: 0.72rem; color: var(--ink-50); margin-top: 0.1rem; }
 
-.budget-summary {
-    background: var(--accent-light);
-    border: 1.5px solid var(--accent);
-    border-radius: var(--radius);
+/* ═══════════════════════════════════════════════════
+   SUMMARY & BUDGET
+   ═══════════════════════════════════════════════════ */
+.summary-card {
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
     padding: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-bottom: 0.5px solid var(--ink-05);
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row .key {
+    font-size: 0.6rem;
+    color: var(--ink-50);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.summary-row .val {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: right;
+}
+
+.budget-display {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 2rem 1.5rem;
     text-align: center;
     margin-bottom: 1.5rem;
+    position: relative;
 }
-.budget-total { font-size: 2.4rem; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
-.budget-per-person { font-size: 0.85rem; color: var(--text-soft); margin-top: 0.3rem; font-weight: 600; }
-
-.floating-action {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%) translateY(120px);
-    width: calc(100% - 2rem);
-    max-width: 460px;
-    z-index: 90;
-    opacity: 0;
-    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+.budget-display::before {
+    content: '';
+    position: absolute;
+    inset: 0.6rem;
+    border: 0.5px solid rgba(168,138,91,0.3);
     pointer-events: none;
 }
-.floating-action.visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+.budget-label {
+    font-size: 0.6rem;
+    color: var(--gold-soft);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+.budget-value {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+}
+.budget-split {
+    font-size: 0.78rem;
+    color: rgba(245,241,234,0.55);
+    margin-top: 0.5rem;
+    font-weight: 300;
+    font-family: var(--serif);
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+}
 
+/* ═══════════════════════════════════════════════════
+   GUEST LIST
+   ═══════════════════════════════════════════════════ */
+.guest-list {
+    margin-bottom: 0.5rem;
+}
+.guest-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0;
+    border-bottom: 0.5px solid var(--ink-05);
+}
+.guest-row:last-child { border-bottom: none; }
+.guest-info { flex: 1; }
+.guest-name { font-weight: 500; font-size: 0.88rem; }
+.guest-sub { font-size: 0.7rem; color: var(--ink-50); margin-top: 0.1rem; }
+.guest-remove {
+    color: var(--ink-30);
+    width: 20px; height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+.guest-remove:hover { color: var(--gold-deep); }
+
+/* ═══════════════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════════════ */
+.empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: var(--paper);
+    border: 0.5px solid var(--ink-10);
+}
+.empty-mark {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+.empty h3 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+}
+.empty p {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-50);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+}
+
+/* ═══════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════ */
 .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(26,26,26,0.5);
+    background: rgba(13,12,10,0.55);
     z-index: 1000;
     align-items: flex-end;
     justify-content: center;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
 }
 .modal-overlay.active { display: flex; }
 .modal {
-    background: var(--bg);
-    border-radius: 24px 24px 0 0;
+    background: var(--cream);
     width: 100%;
     max-width: 480px;
     max-height: 88vh;
     overflow-y: auto;
-    padding: 2rem 1.5rem;
-    animation: slideUp 0.3s ease;
+    padding: 2rem 1.75rem;
+    animation: slideUp 0.4s ease;
+    position: relative;
 }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-handle { width: 44px; height: 4px; background: var(--border-strong); border-radius: 4px; margin: 0 auto 1.5rem; }
-.modal h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+.modal-handle {
+    width: 40px; height: 3px;
+    background: var(--ink-30);
+    margin: 0 auto 1.5rem;
+}
+.modal h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1.75rem;
+    letter-spacing: -0.01em;
+}
 
+/* ═══════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════ */
 .toast {
     position: fixed;
     top: 1rem;
     left: 50%;
     transform: translateX(-50%) translateY(-120px);
-    background: var(--dark);
-    color: var(--bg);
-    padding: 0.85rem 1.5rem;
-    border-radius: 100px;
-    font-size: 0.88rem;
-    font-weight: 600;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 0.9rem 1.6rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     z-index: 10000;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     max-width: 90%;
-    box-shadow: var(--shadow-lg);
+    border: 0.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
-.toast.success { background: var(--success); }
+.toast .tmark { color: var(--gold); font-family: var(--serif); font-style: italic; }
 
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 6px; }
+::-webkit-scrollbar-thumb { background: var(--ink-30); }
+
+/* ═══════════════════════════════════════════════════
+   FLOATING ACTION
+   ═══════════════════════════════════════════════════ */
+.floating-cta {
+    position: fixed;
+    bottom: 96px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    width: calc(100% - 2rem);
+    max-width: 460px;
+    z-index: 95;
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+.floating-cta.visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+
+.section-title {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+}
+.section-sub {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-50);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
 </style>
 </head>
 <body>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><span class="tmark">—</span><span id="toastText"></span></div>
 
-<div class="app" id="onboarding-screen">
-    <div class="onboarding">
-        <div class="onboarding-logo">GERÊNCIA<span>.</span></div>
-        <div class="onboarding-sub">organiza o role, não passe vergonha</div>
+<!-- ═══════════════════════════════════════════════════
+     ENTRY (Private invite-only)
+     ═══════════════════════════════════════════════════ -->
+<div id="entry-screen">
+    <div class="entry">
+        <div class="entry-frame"></div>
+        <span class="entry-corner tl"></span>
+        <span class="entry-corner tr"></span>
+        <span class="entry-corner bl"></span>
+        <span class="entry-corner br"></span>
 
-        <div class="onboarding-form">
-            <div class="onboarding-tabs">
-                <button class="onboarding-tab active" onclick="switchAuthTab('create', this)">Criar Squad</button>
-                <button class="onboarding-tab" onclick="switchAuthTab('join', this)">Entrar em Squad</button>
+        <div class="entry-top">
+            <div class="entry-eyebrow">Private Members Society</div>
+            <div class="entry-logo">Gerência<span class="dot">.</span></div>
+            <div class="entry-tagline">A sociedade privada dos que sabem receber. Acesso somente por convite.</div>
+        </div>
+
+        <div class="entry-form">
+            <div class="tabs-segment">
+                <button class="tab-seg active" onclick="entryTab('invite', this)">Aceitar convite</button>
+                <button class="tab-seg" onclick="entryTab('signin', this)">Já sou membro</button>
             </div>
 
-            <div id="auth-create">
-                <div class="input-group">
-                    <label class="input-label">Como te chamam?</label>
-                    <input class="input" type="text" id="userName" placeholder="Seu nome ou apelido">
+            <!-- Accept invite -->
+            <div id="entry-invite">
+                <div class="field">
+                    <label class="field-label">Código de convite</label>
+                    <input class="input invite-input" type="text" id="inviteCode" placeholder="XXXX-XXXX" maxlength="9">
                 </div>
-                <div class="input-group">
-                    <label class="input-label">Instagram</label>
-                    <input class="input" type="text" id="userInsta" placeholder="@seuuser">
+                <div class="field">
+                    <label class="field-label">Nome completo</label>
+                    <input class="input" type="text" id="userName" placeholder="Como nos apresentamos">
                 </div>
-                <div class="input-group">
-                    <label class="input-label">Nome do Squad (opcional)</label>
-                    <input class="input" type="text" id="squadName" placeholder="Ex: O Time, Os Caras">
+                <div class="field">
+                    <label class="field-label">Instagram</label>
+                    <input class="input" type="text" id="userInsta" placeholder="@usuario">
                 </div>
-                <button class="btn btn-accent btn-full" onclick="createSquad()">Criar Squad →</button>
+                <button class="btn btn-dark btn-full" onclick="acceptInvite()">Entrar na sociedade</button>
             </div>
 
-            <div id="auth-join" style="display:none;">
-                <div class="input-group">
-                    <label class="input-label">Como te chamam?</label>
-                    <input class="input" type="text" id="joinUserName" placeholder="Seu nome ou apelido">
+            <!-- Sign in -->
+            <div id="entry-signin" style="display:none;">
+                <div class="field">
+                    <label class="field-label">Instagram</label>
+                    <input class="input" type="text" id="signinInsta" placeholder="@usuario">
                 </div>
-                <div class="input-group">
-                    <label class="input-label">Instagram</label>
-                    <input class="input" type="text" id="joinUserInsta" placeholder="@seuuser">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Código do Squad</label>
-                    <input class="input" type="text" id="inviteCodeInput" placeholder="GRC-XXXX" style="text-transform:uppercase;letter-spacing:0.2em;font-family:monospace;">
-                </div>
-                <button class="btn btn-accent btn-full" onclick="joinSquad()">Entrar no Squad →</button>
+                <button class="btn btn-outline btn-full" onclick="signIn()">Acessar</button>
             </div>
         </div>
 
-        <p class="onboarding-tagline">
-            Chega de <span>bagunça no grupo</span>.<br>Aqui o date sai do papel.
-        </p>
+        <div class="entry-footer">
+            <div class="line-hair"></div>
+            Membros ativos · por indicação
+        </div>
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════
+     MAIN APP
+     ═══════════════════════════════════════════════════ -->
 <div class="app" id="main-app" style="display:none;">
 
     <div class="header">
-        <div class="header-logo">GERÊNCIA<span>.</span></div>
-        <button class="header-user" id="headerAvatar" onclick="showProfile()"></button>
+        <div class="logotype">Gerência<span class="dot">.</span></div>
+        <div class="header-actions">
+            <button class="icon-btn" onclick="showNotifications()" title="Convites">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <path d="M4 5h16v14H4z"/>
+                    <path d="M4 5l8 7 8-7"/>
+                </svg>
+                <span class="badge"></span>
+            </button>
+            <button class="avatar-header" id="headerAvatar" onclick="switchScreen('screen-me')"></button>
+        </div>
     </div>
 
-    <div class="screen active" id="screen-home">
-        <div class="greeting">
-            <h1 id="greetingName">E aí, parceiro</h1>
-            <p>Bora acelerar?</p>
+    <!-- FEED (Home) -->
+    <div class="screen active" id="screen-feed">
+        <div class="feed-greeting">
+            <div class="hello">
+                Boa noite, <span class="italic" id="greetingName">caro</span>.
+            </div>
+            <div class="sub">Quem está recebendo hoje?</div>
         </div>
 
-        <div class="quick-stats">
-            <div class="stat-card"><h3 id="statDates">0</h3><p>Dates</p></div>
-            <div class="stat-card"><h3 id="statSquad">0</h3><p>Squad</p></div>
-            <div class="stat-card"><h3 id="statScore">100</h3><p>Score</p></div>
-        </div>
-
-        <div class="section-label">Próximas baguncinhas</div>
-        <div id="upcomingContainer"></div>
-
-        <div class="divider"></div>
-
-        <div class="section-label">Histórico</div>
-        <div id="historyContainer"></div>
+        <div class="eyebrow gold">Últimos encontros</div>
+        <div id="feedList"></div>
     </div>
 
+    <!-- EXPLORE -->
+    <div class="screen" id="screen-explore">
+        <div class="eyebrow gold">Curadoria</div>
+        <h2 class="section-title">Espaços <span class="italic" style="font-style:italic; color:var(--gold-deep);">selecionados</span></h2>
+        <div class="section-sub">Os endereços que a sociedade reconhece.</div>
+
+        <div class="filter-chips">
+            <button class="chip active" onclick="filterExplore('restaurante', this)">Restaurante</button>
+            <button class="chip" onclick="filterExplore('bar', this)">Bar</button>
+            <button class="chip locked" onclick="switchScreen('screen-members')">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right:0.3rem;">
+                    <rect x="5" y="11" width="14" height="10" rx="1"/>
+                    <path d="M8 11V7a4 4 0 018 0v4"/>
+                </svg>
+                Círculo Privado
+            </button>
+        </div>
+
+        <div class="tier-toggle" id="exploreTiers">
+            <button class="tier-btn active" onclick="filterTier('all', this, 'explore')">Todos</button>
+            <button class="tier-btn" onclick="filterTier('high_end', this, 'explore')">Alta gastronomia</button>
+            <button class="tier-btn" onclick="filterTier('mais_tranquilo', this, 'explore')">Casual</button>
+        </div>
+
+        <div id="exploreList"></div>
+    </div>
+
+    <!-- CREATE ROLE -->
     <div class="screen" id="screen-create">
-        <div class="section-label">Novo Date</div>
-        <h2 class="section-title">Bora fazer acontecer?</h2>
+        <div class="eyebrow gold">Novo encontro</div>
+        <h2 class="section-title">Vamos <span class="italic" style="font-style:italic; color:var(--gold-deep);">organizar</span></h2>
+        <div class="section-sub">Quatro etapas. Simples assim.</div>
 
         <div class="create-steps">
-            <div class="step active" data-step="1"><div class="step-dot">1</div><span class="step-label">Tipo</span></div>
-            <div class="step" data-step="2"><div class="step-dot">2</div><span class="step-label">Local</span></div>
-            <div class="step" data-step="3"><div class="step-dot">3</div><span class="step-label">Galera</span></div>
-            <div class="step" data-step="4"><div class="step-dot">4</div><span class="step-label">Partiu</span></div>
+            <div class="step active" data-step="1"><div class="step-mark">I</div><span class="step-text">Natureza</span></div>
+            <div class="step" data-step="2"><div class="step-mark">II</div><span class="step-text">Lugar</span></div>
+            <div class="step" data-step="3"><div class="step-mark">III</div><span class="step-text">Convidados</span></div>
+            <div class="step" data-step="4"><div class="step-mark">IV</div><span class="step-text">Confirmar</span></div>
         </div>
 
+        <!-- Step 1 -->
         <div class="step-content active" id="step1">
-            <div class="date-type-grid">
-                <button class="date-type-card" onclick="selectDateType(this, 'double')" data-type="double">
-                    <span class="type-icon">👫</span><h4>Double Date</h4><p>2 x 2, clássico</p>
+            <div class="type-grid">
+                <button class="type-card" onclick="selectType(this, 'jantar')" data-type="jantar">
+                    <div class="type-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M7 2v20M4 5a3 3 0 016 0v6H4V5zM17 2v20M20 2a3 3 0 00-6 3v10c0 2 2 2 2 2v5"/>
+                        </svg>
+                    </div>
+                    <div class="type-name">Jantar</div>
+                    <div class="type-desc">Restaurante</div>
                 </button>
-                <button class="date-type-card" onclick="selectDateType(this, 'group')" data-type="group">
-                    <span class="type-icon">🎉</span><h4>Grupo</h4><p>3+3, 5+5, etc</p>
+                <button class="type-card" onclick="selectType(this, 'drinks')" data-type="drinks">
+                    <div class="type-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M4 4h16l-3 8H7L4 4zM12 12v8M8 20h8"/>
+                        </svg>
+                    </div>
+                    <div class="type-name">Drinks</div>
+                    <div class="type-desc">Bar</div>
                 </button>
-                <button class="date-type-card" onclick="selectDateType(this, 'hunt')" data-type="hunt">
-                    <span class="type-icon">🎯</span><h4>Hunt Mode</h4><p>Só o squad</p>
+                <button class="type-card" onclick="selectType(this, 'festa')" data-type="festa">
+                    <div class="type-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M5 3l14 8-14 8V3z"/>
+                            <circle cx="5" cy="3" r="1"/>
+                            <circle cx="5" cy="19" r="1"/>
+                        </svg>
+                    </div>
+                    <div class="type-name">Festa</div>
+                    <div class="type-desc">Privada</div>
                 </button>
-                <button class="date-type-card" onclick="selectDateType(this, 'house')" data-type="house">
-                    <span class="type-icon">🏠</span><h4>Na Casa</h4><p>Encontro em casa</p>
+                <button class="type-card" onclick="selectType(this, 'casa')" data-type="casa">
+                    <div class="type-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M3 12L12 4l9 8M5 10v10h14V10"/>
+                        </svg>
+                    </div>
+                    <div class="type-name">Em casa</div>
+                    <div class="type-desc">Residência</div>
                 </button>
             </div>
 
-            <div class="input-group">
-                <label class="input-label">Quando?</label>
-                <input class="input" type="date" id="dateDate">
+            <div class="field">
+                <label class="field-label">Data</label>
+                <input class="input" type="date" id="roleDate">
             </div>
-            <div class="input-group">
-                <label class="input-label">Horário</label>
-                <input class="input" type="time" id="dateTime" value="20:00">
+            <div class="field">
+                <label class="field-label">Horário</label>
+                <input class="input" type="time" id="roleTime" value="20:00">
             </div>
-
-            <button class="btn btn-primary btn-full" onclick="nextStep(2)">Avançar →</button>
+            <button class="btn btn-dark btn-full" onclick="nextStep(2)">Próximo</button>
         </div>
 
+        <!-- Step 2 -->
         <div class="step-content" id="step2">
-            <div class="venue-filters">
-                <button class="filter-chip active" onclick="filterVenues('restaurante', this)">🍽️ Restaurante</button>
-                <button class="filter-chip" onclick="filterVenues('bar', this)">🍺 Bar</button>
-                <button class="filter-chip locked" onclick="showPremium()">🔒 Festas</button>
-                <button class="filter-chip" onclick="filterVenues('casa', this)">🏠 Casa</button>
+            <div class="filter-chips">
+                <button class="chip active" onclick="filterVenue('restaurante', this)">Restaurante</button>
+                <button class="chip" onclick="filterVenue('bar', this)">Bar</button>
+                <button class="chip locked" onclick="switchScreen('screen-members')">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-right:0.3rem;">
+                        <rect x="5" y="11" width="14" height="10" rx="1"/>
+                        <path d="M8 11V7a4 4 0 018 0v4"/>
+                    </svg>
+                    Privado
+                </button>
+                <button class="chip" onclick="filterVenue('casa', this)">Casa</button>
             </div>
-
-            <div class="sub-filters" id="restaurantSubfilter">
-                <button class="sub-filter active" onclick="filterRestaurants('all', this)">Todos</button>
-                <button class="sub-filter" onclick="filterRestaurants('high_end', this)">High End</button>
-                <button class="sub-filter" onclick="filterRestaurants('mais_tranquilo', this)">Mais Tranquilo</button>
+            <div class="tier-toggle" id="createTiers">
+                <button class="tier-btn active" onclick="filterTier('all', this, 'create')">Todos</button>
+                <button class="tier-btn" onclick="filterTier('high_end', this, 'create')">Alta gastronomia</button>
+                <button class="tier-btn" onclick="filterTier('mais_tranquilo', this, 'create')">Casual</button>
             </div>
-
             <div id="venueList"></div>
+            <button class="add-custom" onclick="openCustomVenueModal()">Adicionar outro endereço</button>
 
-            <button class="add-custom-venue" onclick="openCustomVenueModal()">+ Adicionar local personalizado</button>
-
-            <div id="houseOption" style="display:none; margin-top:1rem;">
-                <div class="input-group">
-                    <label class="input-label">De quem é a casa?</label>
-                    <select class="input" id="houseOwner"><option value="">Selecionar...</option></select>
+            <div id="houseBlock" style="display:none; margin-top:1.5rem;">
+                <div class="field">
+                    <label class="field-label">Anfitrião</label>
+                    <select class="select" id="houseOwner"><option value="">Selecionar</option></select>
                 </div>
-                <div class="input-group">
-                    <label class="input-label">Endereço (só o squad vê)</label>
+                <div class="field">
+                    <label class="field-label">Endereço (privado ao círculo)</label>
                     <input class="input" type="text" id="houseAddress" placeholder="Endereço completo">
                 </div>
-                <button class="btn btn-primary btn-full" onclick="confirmHouseAndNext()">Continuar →</button>
+                <button class="btn btn-dark btn-full" onclick="confirmHouse()">Próximo</button>
             </div>
 
-            <div style="display:flex; gap:0.8rem; margin-top:1rem;">
-                <button class="btn btn-outline btn-full" onclick="prevStep(1)">← Voltar</button>
+            <div style="margin-top:1.25rem;">
+                <button class="btn btn-outline btn-full" onclick="prevStep(1)">Voltar</button>
             </div>
         </div>
 
+        <!-- Step 3 -->
         <div class="step-content" id="step3">
-            <div class="section-label" style="margin-bottom:1rem">Squad — quem vai?</div>
-            <div id="squadCheckList"></div>
+            <div class="eyebrow">Amigos do círculo</div>
+            <div id="friendCheckList"></div>
+            <div class="line"></div>
+            <div class="eyebrow" id="guestsTitle">Acompanhantes</div>
+            <div id="guestList"></div>
+            <button class="btn btn-ghost btn-sm btn-full" onclick="openAddGuestModal()" id="addGuestBtn">+ Adicionar acompanhante</button>
 
-            <div class="divider"></div>
-
-            <div id="womenSection">
-                <div class="section-label" style="margin-bottom:1rem">Mulheres confirmadas</div>
-                <div id="womenList"></div>
-                <button class="btn btn-ghost btn-sm btn-full" onclick="openAddWomanModal()" style="margin-top:0.5rem">
-                    + Adicionar mulher ao date
-                </button>
-            </div>
-
-            <div style="display:flex; gap:0.8rem; margin-top:1.5rem;">
-                <button class="btn btn-outline" onclick="prevStep(2)" style="flex:1">← Voltar</button>
-                <button class="btn btn-primary" onclick="nextStep(4)" style="flex:2">Avançar →</button>
+            <div style="display:flex; gap:0.75rem; margin-top:2rem;">
+                <button class="btn btn-outline" onclick="prevStep(2)" style="flex:1">Voltar</button>
+                <button class="btn btn-dark" onclick="nextStep(4)" style="flex:2">Próximo</button>
             </div>
         </div>
 
+        <!-- Step 4 -->
         <div class="step-content" id="step4">
-            <div class="section-label" style="margin-bottom:1rem">Resumo do date</div>
-            <div id="dateSummary"></div>
+            <div class="eyebrow">Resumo</div>
+            <div id="roleSummary"></div>
 
-            <div class="divider"></div>
-
-            <div class="section-label" style="margin-bottom:0.8rem">Budget estimado</div>
-            <div class="budget-summary">
-                <div class="budget-total" id="summaryBudget">R$ 0</div>
-                <div class="budget-per-person" id="summaryPerPerson">R$ 0 por pessoa</div>
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">Quanto cada um topa gastar? (R$)</label>
-                <input class="input" type="number" id="budgetInput" placeholder="150" oninput="updateBudget()">
+            <div class="eyebrow" style="margin-top:1.5rem;">Estimativa</div>
+            <div class="budget-display">
+                <div class="budget-label">Total estimado</div>
+                <div class="budget-value" id="budgetTotal">R$ 0</div>
+                <div class="budget-split" id="budgetSplit">por pessoa</div>
             </div>
 
-            <div style="display:flex; gap:0.8rem; margin-top:1rem;">
-                <button class="btn btn-outline" onclick="prevStep(3)" style="flex:1">← Voltar</button>
-                <button class="btn btn-accent" onclick="createDate()" style="flex:2">Fechar o Plano ✓</button>
+            <div class="field">
+                <label class="field-label">Ajustar valor por pessoa (R$)</label>
+                <input class="input" type="number" id="budgetInput" oninput="updateBudget()" placeholder="150">
             </div>
-        </div>
-    </div>
 
-    <div class="screen" id="screen-venues">
-        <div class="section-label">Locais</div>
-        <h2 class="section-title">Os melhores spots de Brasília</h2>
-        <div class="venue-filters">
-            <button class="filter-chip active" onclick="filterVenuesPage('restaurante', this)">🍽️ Restaurante</button>
-            <button class="filter-chip" onclick="filterVenuesPage('bar', this)">🍺 Bar</button>
-            <button class="filter-chip locked" onclick="showPremium()">🔒 Festas Exclusivas</button>
-        </div>
-        <div class="sub-filters" id="venuesPageSubfilter">
-            <button class="sub-filter active" onclick="filterRestaurantsPage('all', this)">Todos</button>
-            <button class="sub-filter" onclick="filterRestaurantsPage('high_end', this)">High End</button>
-            <button class="sub-filter" onclick="filterRestaurantsPage('mais_tranquilo', this)">Mais Tranquilo</button>
-        </div>
-        <div id="venuesPageList"></div>
-    </div>
-
-    <div class="screen" id="screen-premium">
-        <div class="premium-hero">
-            <div class="premium-lock-icon">🔒</div>
-            <h2>Festas Exclusivas da Bolha</h2>
-            <p>Só quem está na bolha sabe das festas. Acesso antecipado, endereços revelados 24h antes, e o network que fecha tudo.</p>
-            <div class="premium-benefits">
-                <div class="premium-benefit">Festas privadas de Brasília</div>
-                <div class="premium-benefit">Lista de convidados + dress code</div>
-                <div class="premium-benefit">Endereço 24h antes do evento</div>
-                <div class="premium-benefit">Prioridade na lista de entrada</div>
-                <div class="premium-benefit">Network exclusivo da bolha</div>
-            </div>
-            <div class="premium-plans">
-                <button class="premium-plan" onclick="subscribe('mensal')">
-                    <div class="premium-plan-info"><h5>Mensal</h5><p>Teste sem compromisso</p></div>
-                    <div class="premium-plan-price">R$ 15,90</div>
-                </button>
-                <button class="premium-plan" onclick="subscribe('trimestral')">
-                    <div class="premium-plan-info"><h5>Trimestral</h5><p>R$ 13,30/mês · 16% off</p></div>
-                    <div class="premium-plan-price">R$ 39,90</div>
-                </button>
-                <button class="premium-plan featured" onclick="subscribe('anual')">
-                    <div class="premium-plan-info"><h5>Anual ⭐</h5><p>R$ 10,83/mês · 32% off</p></div>
-                    <div class="premium-plan-price">R$ 129,90</div>
-                </button>
-            </div>
-        </div>
-
-        <div class="section-label">Próximos eventos (bloqueado)</div>
-        <div class="locked-events">
-            <div class="locked-event-card">
-                <div class="locked-event-info"><h5>🔒 Pool party exclusiva</h5><p>Endereço revelado 24h antes · Lago Sul</p></div>
-                <div class="locked-event-badge">🔒 Premium</div>
-            </div>
-            <div class="locked-event-card">
-                <div class="locked-event-info"><h5>🔒 Rooftop privado</h5><p>Endereço revelado 24h antes · Noroeste</p></div>
-                <div class="locked-event-badge">🔒 Premium</div>
-            </div>
-            <div class="locked-event-card">
-                <div class="locked-event-info"><h5>🔒 House party · Mansão</h5><p>Endereço revelado 24h antes · Lago Norte</p></div>
-                <div class="locked-event-badge">🔒 Premium</div>
-            </div>
-            <div class="locked-event-card">
-                <div class="locked-event-info"><h5>🔒 After exclusivo</h5><p>Endereço revelado 24h antes · Local secreto</p></div>
-                <div class="locked-event-badge">🔒 Premium</div>
-            </div>
-            <div class="locked-event-card">
-                <div class="locked-event-info"><h5>🔒 Festa privada</h5><p>Endereço revelado 24h antes · Brasília</p></div>
-                <div class="locked-event-badge">🔒 Premium</div>
+            <div style="display:flex; gap:0.75rem; margin-top:2rem;">
+                <button class="btn btn-outline" onclick="prevStep(3)" style="flex:1">Voltar</button>
+                <button class="btn btn-dark" onclick="createRole()" style="flex:2">Confirmar encontro</button>
             </div>
         </div>
     </div>
 
-    <div class="screen" id="screen-squad">
-        <div class="section-label">Seu Squad</div>
-        <h2 class="section-title" id="squadTitle">A tropa</h2>
+    <!-- CIRCLE -->
+    <div class="screen" id="screen-circle">
+        <div class="eyebrow gold">Seu círculo</div>
+        <h2 class="section-title" id="circleTitle">Conexões</h2>
 
-        <div class="card">
-            <div id="squadList"></div>
+        <div class="circle-intro">
+            <p>As pessoas que você adicionou. Todas entraram no mesmo convite ou foram adicionadas por você.</p>
         </div>
 
-        <div class="invite-box">
-            <h4>Chama mais parceiros</h4>
-            <div class="invite-code" id="inviteCode">GRC-2026</div>
-            <p>Compartilha esse código</p>
-            <button class="btn btn-ghost btn-sm" onclick="copyInvite()" style="margin-top:0.8rem">📋 Copiar código</button>
+        <div id="friendsList"></div>
+
+        <div class="invite-panel">
+            <div class="invite-panel-eyebrow">Convite pessoal</div>
+            <h4>Seu acesso, <span class="italic">seu círculo</span></h4>
+            <div class="invite-code-display" id="inviteDisplay">XXXX-XXXX</div>
+            <p>Cada novo membro entra pelo seu nome.</p>
+            <button class="btn btn-gold btn-sm" onclick="copyInvite()">Copiar convite</button>
         </div>
 
-        <div class="join-squad-box">
-            <h4>Entrar em outro squad</h4>
-            <p>Recebeu um código? Cola aqui pra entrar.</p>
-            <div class="input-group">
-                <input class="input" type="text" id="squadJoinInput" placeholder="GRC-XXXX" style="text-transform:uppercase;letter-spacing:0.2em;font-family:monospace;">
+        <button class="btn btn-outline btn-full" onclick="openAddFriendModal()">Adicionar manualmente</button>
+    </div>
+
+    <!-- ROLES -->
+    <div class="screen" id="screen-roles">
+        <div class="eyebrow gold">Seus encontros</div>
+        <h2 class="section-title">Agenda</h2>
+        <div class="section-sub">O que está à mesa.</div>
+        <div id="rolesList"></div>
+    </div>
+
+    <!-- MEMBERS (Premium) -->
+    <div class="screen" id="screen-members">
+        <div class="members-hero">
+            <div class="members-hero-eyebrow">Círculo Privado</div>
+            <h2>Onde <span class="italic">não se entra</span> sem convite.</h2>
+            <p>Festas privadas em Brasília que só quem é da bolha sabe onde acontecem. O endereço é revelado 24h antes. A lista é curada. O network é real.</p>
+            <ul class="members-benefits">
+                <li><span class="bullet"></span>Festas privadas com curadoria de anfitriões</li>
+                <li><span class="bullet"></span>Endereço revelado apenas 24h antes</li>
+                <li><span class="bullet"></span>Dress code e lista de convidados exibidos com antecedência</li>
+                <li><span class="bullet"></span>Prioridade em reservas de alta gastronomia</li>
+                <li><span class="bullet"></span>Network exclusivo da sociedade</li>
+            </ul>
+            <button class="plan-row" onclick="subscribe('mensal')">
+                <div class="plan-info">
+                    <div class="plan-name">Mensal</div>
+                    <div class="plan-desc">Experimentar</div>
+                </div>
+                <div class="plan-price">R$ 15,90</div>
+            </button>
+            <button class="plan-row" onclick="subscribe('trimestral')">
+                <div class="plan-info">
+                    <div class="plan-name">Trimestral</div>
+                    <div class="plan-desc">16% de desconto</div>
+                </div>
+                <div class="plan-price">R$ 39,90</div>
+            </button>
+            <button class="plan-row featured" onclick="subscribe('anual')">
+                <div class="plan-info">
+                    <div class="plan-name">Anual · Recomendado</div>
+                    <div class="plan-desc">32% de desconto · R$ 10,83/mês</div>
+                </div>
+                <div class="plan-price">R$ 129,90</div>
+            </button>
+        </div>
+
+        <div class="eyebrow gold">Próximos eventos</div>
+        <div class="locked-list">
+            <div class="locked-row">
+                <div class="locked-row-info">
+                    <div class="locked-row-name">Jantar fechado</div>
+                    <div class="locked-row-meta">Lago Sul · Revelado 24h antes</div>
+                </div>
+                <span class="locked-row-badge">Membros</span>
             </div>
-            <button class="btn btn-outline btn-full btn-sm" onclick="joinExistingSquad()">Entrar</button>
+            <div class="locked-row">
+                <div class="locked-row-info">
+                    <div class="locked-row-name">Rooftop privado</div>
+                    <div class="locked-row-meta">Noroeste · Revelado 24h antes</div>
+                </div>
+                <span class="locked-row-badge">Membros</span>
+            </div>
+            <div class="locked-row">
+                <div class="locked-row-info">
+                    <div class="locked-row-name">Festa em mansão</div>
+                    <div class="locked-row-meta">Lago Norte · Revelado 24h antes</div>
+                </div>
+                <span class="locked-row-badge">Membros</span>
+            </div>
+            <div class="locked-row">
+                <div class="locked-row-info">
+                    <div class="locked-row-name">After exclusivo</div>
+                    <div class="locked-row-meta">Endereço privado</div>
+                </div>
+                <span class="locked-row-badge">Membros</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ME (Profile) -->
+    <div class="screen" id="screen-me">
+        <div class="profile-hero">
+            <div class="avatar avatar-xl" id="profileAvatar">
+                <span class="inner" id="profileAvatarInner"></span>
+            </div>
+            <div class="profile-name" id="profileName">—</div>
+            <div class="profile-handle" id="profileHandle">@—</div>
+            <div class="profile-bio" id="profileBio"></div>
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="profile-stat-num" id="statRoles">0</div>
+                    <div class="profile-stat-label">Encontros</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-num" id="statFriends">0</div>
+                    <div class="profile-stat-label">Círculo</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-num" id="statHost">0</div>
+                    <div class="profile-stat-label">Hosts</div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-outline btn-sm" onclick="openEditProfile()">Editar perfil</button>
+                <button class="btn btn-ghost btn-sm" onclick="signOut()">Sair</button>
+            </div>
         </div>
 
-        <button class="btn btn-ghost btn-full" onclick="openAddMemberModal()" style="margin-top:1rem">
-            + Adicionar membro manualmente
-        </button>
+        <div class="profile-section">
+            <div class="profile-section-title">
+                Seu círculo
+                <span class="count" id="myFriendsCount">—</span>
+            </div>
+            <div id="myFriendsPreview"></div>
+            <button class="btn btn-ghost btn-sm btn-full" onclick="switchScreen('screen-circle')" style="margin-top:0.5rem;">Ver todos</button>
+        </div>
+
+        <div class="profile-section">
+            <div class="profile-section-title">
+                Encontros recentes
+            </div>
+            <div id="myRolesPreview"></div>
+        </div>
     </div>
 
-    <div class="screen" id="screen-dates">
-        <div class="section-label">Dates</div>
-        <h2 class="section-title">Agenda da gerência</h2>
-        <div id="datesListContainer"></div>
-    </div>
-
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <button class="nav-item active" data-screen="screen-home" onclick="switchScreen('screen-home', this)">
-            <span class="nav-icon">🏠</span><span class="nav-label">Home</span>
+        <button class="nav-item active" data-screen="screen-feed" onclick="switchScreen('screen-feed', this)">
+            <div class="nav-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </div>
+            <span class="nav-label">Feed</span>
+            <div class="nav-dot"></div>
+        </button>
+        <button class="nav-item" data-screen="screen-explore" onclick="switchScreen('screen-explore', this)">
+            <div class="nav-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="M21 21l-4.3-4.3"/>
+                </svg>
+            </div>
+            <span class="nav-label">Espaços</span>
+            <div class="nav-dot"></div>
         </button>
         <button class="nav-item" data-screen="screen-create" onclick="switchScreen('screen-create', this)">
-            <span class="nav-icon">✨</span><span class="nav-label">Criar</span>
+            <div class="nav-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 8v8M8 12h8"/>
+                </svg>
+            </div>
+            <span class="nav-label">Criar</span>
+            <div class="nav-dot"></div>
         </button>
-        <button class="nav-item" data-screen="screen-venues" onclick="switchScreen('screen-venues', this)">
-            <span class="nav-icon">📍</span><span class="nav-label">Locais</span>
+        <button class="nav-item" data-screen="screen-circle" onclick="switchScreen('screen-circle', this)">
+            <div class="nav-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                    <circle cx="9" cy="9" r="3.5"/>
+                    <circle cx="16" cy="11" r="2.5"/>
+                    <path d="M3 19c0-3 2.5-5 6-5s6 2 6 5M14 18c0-2 1.5-3.5 4-3.5s3 1.5 3 3.5"/>
+                </svg>
+            </div>
+            <span class="nav-label">Círculo</span>
+            <div class="nav-dot"></div>
         </button>
-        <button class="nav-item" data-screen="screen-squad" onclick="switchScreen('screen-squad', this)">
-            <span class="nav-icon">👥</span><span class="nav-label">Squad</span>
-        </button>
-        <button class="nav-item" data-screen="screen-dates" onclick="switchScreen('screen-dates', this)">
-            <span class="nav-icon">📅</span><span class="nav-label">Dates</span>
+        <button class="nav-item" data-screen="screen-roles" onclick="switchScreen('screen-roles', this)">
+            <div class="nav-icon-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                    <rect x="4" y="5" width="16" height="16" rx="1"/>
+                    <path d="M4 9h16M9 3v4M15 3v4"/>
+                </svg>
+            </div>
+            <span class="nav-label">Agenda</span>
+            <div class="nav-dot"></div>
         </button>
     </div>
 </div>
 
-<div class="floating-action" id="floatingNext">
-    <button class="btn btn-accent btn-full" onclick="nextStepFromVenue()">Avançar →</button>
+<!-- FLOATING NEXT -->
+<div class="floating-cta" id="floatingCta">
+    <button class="btn btn-dark btn-full" onclick="nextFromVenue()">Próximo</button>
 </div>
 
-<div class="modal-overlay" id="modalAddWoman" onclick="closeModal(event, 'modalAddWoman')">
+<!-- MODALS -->
+<div class="modal-overlay" id="modalAddGuest" onclick="closeModal(event, 'modalAddGuest')">
     <div class="modal">
         <div class="modal-handle"></div>
-        <h3>Adicionar ao date</h3>
-        <div class="input-group">
-            <label class="input-label">Nome dela</label>
-            <input class="input" type="text" id="womanName" placeholder="Nome ou apelido">
+        <h3>Adicionar ao encontro</h3>
+        <div class="field">
+            <label class="field-label">Nome</label>
+            <input class="input" type="text" id="guestName" placeholder="Nome completo">
         </div>
-        <div class="input-group">
-            <label class="input-label">Instagram (opcional)</label>
-            <input class="input" type="text" id="womanInsta" placeholder="@instagram">
+        <div class="field">
+            <label class="field-label">Instagram</label>
+            <input class="input" type="text" id="guestInsta" placeholder="@usuario">
         </div>
-        <div class="input-group">
-            <label class="input-label">Quem tá alinhando?</label>
-            <select class="input" id="womanPeer"></select>
+        <div class="field">
+            <label class="field-label">Acompanha quem?</label>
+            <select class="select" id="guestPair"></select>
         </div>
-        <button class="btn btn-accent btn-full" onclick="addWoman()">Adicionar</button>
+        <button class="btn btn-dark btn-full" onclick="addGuest()">Adicionar</button>
     </div>
 </div>
 
-<div class="modal-overlay" id="modalAddMember" onclick="closeModal(event, 'modalAddMember')">
+<div class="modal-overlay" id="modalAddFriend" onclick="closeModal(event, 'modalAddFriend')">
     <div class="modal">
         <div class="modal-handle"></div>
-        <h3>Novo membro do squad</h3>
-        <div class="input-group">
-            <label class="input-label">Nome</label>
-            <input class="input" type="text" id="memberName" placeholder="Nome ou apelido">
+        <h3>Novo membro do círculo</h3>
+        <div class="field">
+            <label class="field-label">Nome</label>
+            <input class="input" type="text" id="friendName" placeholder="Nome completo">
         </div>
-        <div class="input-group">
-            <label class="input-label">Instagram</label>
-            <input class="input" type="text" id="memberInsta" placeholder="@instagram">
+        <div class="field">
+            <label class="field-label">Instagram</label>
+            <input class="input" type="text" id="friendInsta" placeholder="@usuario">
         </div>
-        <button class="btn btn-accent btn-full" onclick="addMember()">Adicionar ao Squad</button>
+        <div class="field">
+            <label class="field-label">Gênero</label>
+            <select class="select" id="friendGender">
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+                <option value="">Prefiro não dizer</option>
+            </select>
+        </div>
+        <button class="btn btn-dark btn-full" onclick="addFriend()">Adicionar ao círculo</button>
     </div>
 </div>
 
 <div class="modal-overlay" id="modalCustomVenue" onclick="closeModal(event, 'modalCustomVenue')">
     <div class="modal">
         <div class="modal-handle"></div>
-        <h3>Local personalizado</h3>
-        <div class="input-group">
-            <label class="input-label">Nome do local</label>
-            <input class="input" type="text" id="customVenueName" placeholder="Ex: Rooftop do João">
+        <h3>Novo endereço</h3>
+        <div class="field">
+            <label class="field-label">Nome</label>
+            <input class="input" type="text" id="customVenueName" placeholder="Nome do local">
         </div>
-        <div class="input-group">
-            <label class="input-label">Tipo</label>
-            <select class="input" id="customVenueType">
+        <div class="field">
+            <label class="field-label">Tipo</label>
+            <select class="select" id="customVenueType">
                 <option value="restaurante">Restaurante</option>
                 <option value="bar">Bar</option>
                 <option value="casa">Casa</option>
                 <option value="outro">Outro</option>
             </select>
         </div>
-        <div class="input-group">
-            <label class="input-label">Média de gasto por pessoa (R$)</label>
+        <div class="field">
+            <label class="field-label">Gasto médio por pessoa (R$)</label>
             <input class="input" type="number" id="customVenuePrice" placeholder="120">
         </div>
-        <div class="input-group">
-            <label class="input-label">Horário</label>
+        <div class="field">
+            <label class="field-label">Horário</label>
             <input class="input" type="text" id="customVenueHours" placeholder="18h - 02h">
         </div>
-        <button class="btn btn-accent btn-full" onclick="addCustomVenue()">Adicionar Local</button>
+        <button class="btn btn-dark btn-full" onclick="addCustomVenue()">Adicionar</button>
     </div>
 </div>
 
-<div class="modal-overlay" id="modalDateDetail" onclick="closeModal(event, 'modalDateDetail')">
+<div class="modal-overlay" id="modalEditProfile" onclick="closeModal(event, 'modalEditProfile')">
     <div class="modal">
         <div class="modal-handle"></div>
-        <div id="dateDetailContent"></div>
+        <h3>Editar perfil</h3>
+        <div class="field">
+            <label class="field-label">Nome</label>
+            <input class="input" type="text" id="editName">
+        </div>
+        <div class="field">
+            <label class="field-label">Instagram</label>
+            <input class="input" type="text" id="editInsta">
+        </div>
+        <div class="field">
+            <label class="field-label">Bio (uma linha)</label>
+            <input class="input" type="text" id="editBio" placeholder="Uma descrição elegante e curta">
+        </div>
+        <button class="btn btn-dark btn-full" onclick="saveProfile()">Salvar</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalRoleDetail" onclick="closeModal(event, 'modalRoleDetail')">
+    <div class="modal">
+        <div class="modal-handle"></div>
+        <div id="roleDetailContent"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalProfileView" onclick="closeModal(event, 'modalProfileView')">
+    <div class="modal">
+        <div class="modal-handle"></div>
+        <div id="profileViewContent"></div>
     </div>
 </div>
 
 <script>
-const RESTAURANTS_HIGH_END = [
+/* ═══════════════════════════════════════════════════
+   VENUES
+   ═══════════════════════════════════════════════════ */
+const VENUES = [
+    // Restaurantes High End
     { id: 101, name: "Trattoria da Rosário", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.6, vibe: "Romântico", cozinha: "Italiana clássica", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
     { id: 102, name: "Lake's", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 220, rating: 4.5, vibe: "Sofisticado", cozinha: "Contemporânea", hours: "Ter-Sáb: 19h-00h" },
     { id: 103, name: "Lago Restaurante", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 200, rating: 4.5, vibe: "Elegante", cozinha: "Contemporânea", hours: "Ter-Dom: 12h-15h / 19h-23h" },
     { id: 104, name: "Marie Cuisine", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 250, rating: 4.7, vibe: "Premium", cozinha: "Francesa", hours: "Ter-Sáb: 19h-23h30" },
     { id: 105, name: "Norū Sushi", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.6, vibe: "Sofisticado", cozinha: "Japonesa premium", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 106, name: "New Koto", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 180, rating: 4.5, vibe: "Elegante", cozinha: "Japonesa tradicional", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
+    { id: 106, name: "New Koto", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 180, rating: 4.5, vibe: "Elegante", cozinha: "Japonesa", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
     { id: 107, name: "Nippon Restaurante", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 160, rating: 4.4, vibe: "Clássico", cozinha: "Japonesa", hours: "Seg-Sáb: 12h-14h30 / 19h-23h" },
     { id: 108, name: "Kinjo Culinária Japonesa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Refinado", cozinha: "Japonesa contemporânea", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
     { id: 109, name: "NK Sushi", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Intimista", cozinha: "Sushi bar", hours: "Ter-Sáb: 18h30-23h30" },
-    { id: 110, name: "Soho", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Moderno", cozinha: "Asiática fusion", hours: "Ter-Sáb: 19h-00h" },
-    { id: 111, name: "Kawa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa contemporânea", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 110, name: "Soho", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Moderno", cozinha: "Fusion", hours: "Ter-Sáb: 19h-00h" },
+    { id: 111, name: "Kawa", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
     { id: 112, name: "Sunsak", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 160, rating: 4.4, vibe: "Elegante", cozinha: "Japonesa/Coreana", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
-    { id: 113, name: "Montaro", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa premium", hours: "Ter-Dom: 12h-15h / 19h-23h" },
-    { id: 114, name: "Rooftop B Hotel", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 200, rating: 4.5, vibe: "Rooftop premium", cozinha: "Contemporânea/Drinks", hours: "Ter-Sáb: 18h-00h" },
+    { id: 113, name: "Montaro", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 170, rating: 4.5, vibe: "Sofisticado", cozinha: "Japonesa", hours: "Ter-Dom: 12h-15h / 19h-23h" },
+    { id: 114, name: "Rooftop B Hotel", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 200, rating: 4.5, vibe: "Rooftop", cozinha: "Contemporânea", hours: "Ter-Sáb: 18h-00h" },
     { id: 115, name: "Chicago Prime", type: "restaurante", tier: "high_end", bairro: "Asa Norte", price: 220, rating: 4.6, vibe: "Premium", cozinha: "Steakhouse", hours: "Seg-Sex: 12h-15h / 19h-23h" },
     { id: 116, name: "Chard", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 230, rating: 4.6, vibe: "Refinado", cozinha: "Autoral", hours: "Ter-Sáb: 19h-23h30" },
-    { id: 117, name: "Fogo de Chão", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.5, vibe: "Sofisticado", cozinha: "Churrasco premium", hours: "Seg-Sex: 12h-15h / 19h-23h" },
+    { id: 117, name: "Fogo de Chão", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 200, rating: 4.5, vibe: "Sofisticado", cozinha: "Churrasco", hours: "Seg-Sex: 12h-15h / 19h-23h" },
     { id: 118, name: "Gurume", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 160, rating: 4.5, vibe: "Moderno", cozinha: "Japonesa/Fusion", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 119, name: "Bloco C", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Descolado", cozinha: "Brasileira contemporânea", hours: "Ter-Dom: 12h-15h / 19h-00h" },
-    { id: 120, name: "A Mano", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Elegante", cozinha: "Italiana artesanal", hours: "Ter-Sáb: 19h-23h30" },
-    { id: 121, name: "Fazenda Churrascada", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.5, vibe: "Rústico premium", cozinha: "Churrasco", hours: "Seg-Dom: 12h-23h" }
-];
-
-const RESTAURANTS_TRANQUILO = [
+    { id: 119, name: "Bloco C", type: "restaurante", tier: "high_end", bairro: "Sudoeste", price: 180, rating: 4.4, vibe: "Descolado", cozinha: "Contemporânea", hours: "Ter-Dom: 12h-15h / 19h-00h" },
+    { id: 120, name: "A Mano", type: "restaurante", tier: "high_end", bairro: "Asa Sul", price: 190, rating: 4.6, vibe: "Elegante", cozinha: "Italiana", hours: "Ter-Sáb: 19h-23h30" },
+    { id: 121, name: "Fazenda Churrascada", type: "restaurante", tier: "high_end", bairro: "Lago Sul", price: 180, rating: 4.5, vibe: "Rústico premium", cozinha: "Churrasco", hours: "Seg-Dom: 12h-23h" },
+    // Restaurantes Tranquilos
     { id: 201, name: "Santé 13", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 90, rating: 4.5, vibe: "Aconchegante", cozinha: "Bistrô", hours: "Seg-Sáb: 12h-15h / 18h-23h" },
-    { id: 202, name: "Sallva", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 100, rating: 4.5, vibe: "Casual chique", cozinha: "Brasileira contemporânea", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 203, name: "Caminito Parrilla", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.4, vibe: "Descontraído", cozinha: "Argentina/Parrilla", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
+    { id: 202, name: "Sallva", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 100, rating: 4.5, vibe: "Casual chique", cozinha: "Brasileira", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 203, name: "Caminito Parrilla", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.4, vibe: "Descontraído", cozinha: "Argentina", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
     { id: 204, name: "Nino Cucina", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Aconchegante", cozinha: "Italiana", hours: "Seg-Sáb: 12h-15h / 18h30-23h" },
-    { id: 205, name: "Restaurante Mangai", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 85, rating: 4.5, vibe: "Regional", cozinha: "Nordestina", hours: "Seg-Dom: 12h-22h" },
-    { id: 206, name: "Gran Bier", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 80, rating: 4.3, vibe: "Descontraído", cozinha: "Cervejaria/Petiscos", hours: "Seg-Sáb: 17h-00h" },
+    { id: 205, name: "Mangai", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 85, rating: 4.5, vibe: "Regional", cozinha: "Nordestina", hours: "Seg-Dom: 12h-22h" },
+    { id: 206, name: "Gran Bier", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 80, rating: 4.3, vibe: "Descontraído", cozinha: "Cervejaria", hours: "Seg-Sáb: 17h-00h" },
     { id: 207, name: "Nazo Japanese Food", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 90, rating: 4.4, vibe: "Casual", cozinha: "Japonesa", hours: "Seg-Sáb: 11h30-15h / 18h-23h" },
-    { id: 208, name: "Coco Bambu", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 130, rating: 4.4, vibe: "Casual chique", cozinha: "Frutos do mar", hours: "Seg-Qui: 12h-23h | Sex-Sáb: 12h-00h" },
+    { id: 208, name: "Coco Bambu", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 130, rating: 4.4, vibe: "Casual chique", cozinha: "Frutos do mar", hours: "Seg-Dom: 12h-00h" },
     { id: 209, name: "Nau Frutos do Mar", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Aconchegante", cozinha: "Frutos do mar", hours: "Ter-Dom: 12h-15h / 19h-23h" },
     { id: 210, name: "Fausto & Manoel", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 90, rating: 4.7, vibe: "Descontraído", cozinha: "Bar gastronômico", hours: "Ter-Sáb: 18h-00h" },
     { id: 211, name: "BSB Grill", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Norte", price: 110, rating: 4.3, vibe: "Casual", cozinha: "Churrasco", hours: "Seg-Sáb: 12h-15h / 19h-23h" },
-    { id: 212, name: "Izzi Wine Garden", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 100, rating: 4.4, vibe: "Aconchegante", cozinha: "Wine bar/Mediterrânea", hours: "Ter-Sáb: 17h-00h" },
-    { id: 213, name: "Manzuá", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Casual chique", cozinha: "Frutos do mar nordestinos", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
-    { id: 214, name: "L'Entrecôte de Paris", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 130, rating: 4.6, vibe: "Clássico", cozinha: "Francesa/Bistrô", hours: "Seg-Sáb: 12h-15h / 19h-23h" }
-];
-
-const BARS = [
+    { id: 212, name: "Izzi Wine Garden", type: "restaurante", tier: "mais_tranquilo", bairro: "Sudoeste", price: 100, rating: 4.4, vibe: "Aconchegante", cozinha: "Wine bar", hours: "Ter-Sáb: 17h-00h" },
+    { id: 213, name: "Manzuá", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 120, rating: 4.5, vibe: "Casual chique", cozinha: "Frutos do mar", hours: "Ter-Sáb: 12h-15h / 19h-23h" },
+    { id: 214, name: "L'Entrecôte de Paris", type: "restaurante", tier: "mais_tranquilo", bairro: "Asa Sul", price: 130, rating: 4.6, vibe: "Clássico", cozinha: "Francesa", hours: "Seg-Sáb: 12h-15h / 19h-23h" },
+    // Bars
     { id: 301, name: "The Old Barr", type: "bar", bairro: "Asa Sul", price: 100, rating: 4.6, vibe: "Sofisticado", cozinha: "Coquetelaria autoral", hours: "Ter-Sáb: 18h-01h" },
-    { id: 302, name: "Boteco Boa Praça", type: "bar", bairro: "Asa Sul", price: 70, rating: 4.4, vibe: "Descontraído", cozinha: "Boteco tradicional", hours: "Seg-Dom: 17h-00h" },
-    { id: 303, name: "Caju Limão", type: "bar", bairro: "Asa Norte", price: 80, rating: 4.5, vibe: "Animado", cozinha: "Drinks/Petiscos", hours: "Ter-Sáb: 18h-01h" },
+    { id: 302, name: "Boteco Boa Praça", type: "bar", bairro: "Asa Sul", price: 70, rating: 4.4, vibe: "Descontraído", cozinha: "Boteco", hours: "Seg-Dom: 17h-00h" },
+    { id: 303, name: "Caju Limão", type: "bar", bairro: "Asa Norte", price: 80, rating: 4.5, vibe: "Animado", cozinha: "Drinks", hours: "Ter-Sáb: 18h-01h" },
     { id: 304, name: "Boteco Sabiá", type: "bar", bairro: "Asa Norte", price: 65, rating: 4.4, vibe: "Boêmio", cozinha: "Boteco", hours: "Seg-Sáb: 17h-00h" },
-    { id: 305, name: "Mercadito", type: "bar", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Moderno", cozinha: "Mexicana/Drinks", hours: "Ter-Sáb: 18h-01h" },
+    { id: 305, name: "Mercadito", type: "bar", bairro: "Sudoeste", price: 95, rating: 4.5, vibe: "Moderno", cozinha: "Mexicana", hours: "Ter-Sáb: 18h-01h" },
     { id: 306, name: "Responsa Bar", type: "bar", bairro: "Asa Sul", price: 85, rating: 4.4, vibe: "Descontraído", cozinha: "Bar gastronômico", hours: "Ter-Sáb: 18h-01h" },
-    { id: 307, name: "Patinho Feio", type: "bar", bairro: "Asa Sul", price: 75, rating: 4.5, vibe: "Alternativo", cozinha: "Drinks/Petiscos", hours: "Ter-Sáb: 19h-02h" },
+    { id: 307, name: "Patinho Feio", type: "bar", bairro: "Asa Sul", price: 75, rating: 4.5, vibe: "Alternativo", cozinha: "Drinks", hours: "Ter-Sáb: 19h-02h" },
     { id: 308, name: "Dudu Bar", type: "bar", bairro: "Lago Norte", price: 110, rating: 4.6, vibe: "Sofisticado", cozinha: "Coquetelaria premium", hours: "Ter-Dom: 18h-02h" },
     { id: 309, name: "313 Drinks", type: "bar", bairro: "Asa Norte", price: 90, rating: 4.5, vibe: "Cocktail bar", cozinha: "Drinks autorais", hours: "Ter-Sáb: 19h-02h" }
 ];
 
-function getAllVenues() { return [...RESTAURANTS_HIGH_END, ...RESTAURANTS_TRANQUILO, ...BARS, ...state.customVenues]; }
-
+/* ═══════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════ */
 let state = {
-    user: null,
-    squad: [],
-    squadName: 'Meu Squad',
-    inviteCode: '',
-    dates: [],
+    user: null,       // { name, insta, bio, gender, inviteCode, joinedVia }
+    friends: [],      // [{ name, insta, gender, addedAt }]
+    roles: [],        // created roles / events
     customVenues: [],
     isPremium: false,
-    currentDate: {
-        type: null, date: '', time: '20:00', venue: null, peers: [], women: [], budget: 0, filterTier: 'all'
-    }
+    inviteCode: '',
+    currentRole: { type: null, date: '', time: '20:00', venue: null, guests: [], attendees: [], budget: 0, filterTier: 'all' }
 };
 
 function init() {
-    const saved = localStorage.getItem('gerencia_data');
+    const saved = localStorage.getItem('gerencia_v2');
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
-            state = { ...state, ...parsed, currentDate: state.currentDate };
+            state = { ...state, ...parsed, currentRole: state.currentRole };
             if (state.user) { showMainApp(); return; }
-        } catch(e) { console.warn('Erro ao carregar', e); }
+        } catch(e) {}
     }
-    const di = document.getElementById('dateDate');
+    const di = document.getElementById('roleDate');
     if (di) di.valueAsDate = new Date();
 }
 function save() {
     const toSave = { ...state };
-    delete toSave.currentDate;
-    localStorage.setItem('gerencia_data', JSON.stringify(toSave));
+    delete toSave.currentRole;
+    localStorage.setItem('gerencia_v2', JSON.stringify(toSave));
 }
-function showToast(msg, type) {
+function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast' + (type ? ' ' + type : '');
+    document.getElementById('toastText').textContent = msg;
     setTimeout(() => t.classList.add('show'), 10);
-    setTimeout(() => t.classList.remove('show'), 2800);
+    setTimeout(() => t.classList.remove('show'), 3000);
 }
 function generateInviteCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = 'GRC-';
+    let code = '';
+    for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += '-';
     for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
     return code;
 }
+function initials(name) { return (name || '').split(' ').filter(Boolean).map(n => n[0]).join('').substring(0,2).toUpperCase(); }
 
-function switchAuthTab(tab, btn) {
-    document.querySelectorAll('.onboarding-tab').forEach(t => t.classList.remove('active'));
+/* ═══════════════════════════════════════════════════
+   ENTRY
+   ═══════════════════════════════════════════════════ */
+function entryTab(tab, btn) {
+    document.querySelectorAll('.tab-seg').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('auth-create').style.display = tab === 'create' ? 'block' : 'none';
-    document.getElementById('auth-join').style.display = tab === 'join' ? 'block' : 'none';
+    document.getElementById('entry-invite').style.display = tab === 'invite' ? 'block' : 'none';
+    document.getElementById('entry-signin').style.display = tab === 'signin' ? 'block' : 'none';
 }
-function createSquad() {
+function acceptInvite() {
+    const code = document.getElementById('inviteCode').value.trim().toUpperCase().replace(/\s/g, '');
     const name = document.getElementById('userName').value.trim();
     const insta = document.getElementById('userInsta').value.trim();
-    const squadName = document.getElementById('squadName').value.trim() || 'Meu Squad';
-    if (!name) { showToast('Coloca seu nome aí'); return; }
-    state.user = { name, insta, score: 100 };
-    state.squadName = squadName;
-    state.squad = [{ name, insta, score: 100, isMe: true }];
+    if (!code || code.length < 8) { showToast('Convite inválido'); return; }
+    if (!name) { showToast('Nome necessário'); return; }
+
+    state.user = {
+        name, insta: insta.replace(/^@/, ''),
+        bio: '', gender: '', joinedVia: code,
+        joinedAt: new Date().toISOString()
+    };
     state.inviteCode = generateInviteCode();
-    state.dates = [];
+    state.friends = [];
+    state.roles = [];
     save();
     showMainApp();
-    showToast(`Salve, ${name}! Squad criado`, 'success');
+    showToast('Bem-vindo à sociedade');
 }
-function joinSquad() {
-    const name = document.getElementById('joinUserName').value.trim();
-    const insta = document.getElementById('joinUserInsta').value.trim();
-    const code = document.getElementById('inviteCodeInput').value.trim().toUpperCase();
-    if (!name) { showToast('Coloca seu nome'); return; }
-    if (!code || !code.startsWith('GRC-')) { showToast('Código inválido'); return; }
-    state.user = { name, insta, score: 100 };
-    state.squadName = 'Squad Compartilhado';
-    state.squad = [{ name, insta, score: 100, isMe: true }];
-    state.inviteCode = code;
-    state.dates = [];
-    save();
-    showMainApp();
-    showToast(`Entrou no squad ${code}`, 'success');
+function signIn() {
+    const insta = document.getElementById('signinInsta').value.trim().replace(/^@/, '');
+    if (!insta) { showToast('Informe seu Instagram'); return; }
+    // Demo: if a user exists, just log in
+    if (state.user) { showMainApp(); showToast('Acesso concedido'); return; }
+    showToast('Ainda não há convite registrado');
+}
+function signOut() {
+    if (!confirm('Sair da sociedade?')) return;
+    localStorage.removeItem('gerencia_v2');
+    location.reload();
 }
 
+/* ═══════════════════════════════════════════════════
+   MAIN APP
+   ═══════════════════════════════════════════════════ */
 function showMainApp() {
-    document.getElementById('onboarding-screen').style.display = 'none';
+    document.getElementById('entry-screen').style.display = 'none';
     document.getElementById('main-app').style.display = 'block';
-    const initials = state.user.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-    document.getElementById('headerAvatar').textContent = initials;
-    document.getElementById('greetingName').textContent = getGreeting() + ', ' + state.user.name.split(' ')[0];
-    document.getElementById('inviteCode').textContent = state.inviteCode;
-    document.getElementById('squadTitle').textContent = state.squadName;
-    const di = document.getElementById('dateDate');
+    document.getElementById('headerAvatar').textContent = initials(state.user.name);
+    const firstName = state.user.name.split(' ')[0];
+    document.getElementById('greetingName').textContent = firstName.toLowerCase();
+    document.getElementById('inviteDisplay').textContent = state.inviteCode;
+
+    const di = document.getElementById('roleDate');
     if (di) di.valueAsDate = new Date();
-    updateStats();
+
     renderVenues();
-    renderSquad();
-    renderDates();
-    renderUpcoming();
-    renderHistory();
-}
-function getGreeting() {
-    const h = new Date().getHours();
-    if (h < 12) return 'Bom dia';
-    if (h < 18) return 'E aí';
-    return 'Boa noite';
+    renderFeed();
+    renderCircle();
+    renderRoles();
+    renderProfile();
 }
 
 function switchScreen(id, btn) {
@@ -1342,131 +2134,111 @@ function switchScreen(id, btn) {
         const nb = document.querySelector(`.nav-item[data-screen="${id}"]`);
         if (nb) nb.classList.add('active');
     }
-    document.getElementById('floatingNext').classList.remove('visible');
-    if (id === 'screen-create') resetCreateForm();
-    if (id === 'screen-venues') renderVenuesPage();
-    if (id === 'screen-squad') renderSquad();
-    if (id === 'screen-dates') renderDates();
+    document.getElementById('floatingCta').classList.remove('visible');
+    if (id === 'screen-create') resetCreate();
+    if (id === 'screen-explore') renderExplore();
+    if (id === 'screen-circle') renderCircle();
+    if (id === 'screen-roles') renderRoles();
+    if (id === 'screen-me') renderProfile();
+    if (id === 'screen-feed') renderFeed();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function renderVenues(typeFilter) {
-    typeFilter = typeFilter || 'restaurante';
-    const list = document.getElementById('venueList');
-    const houseOpt = document.getElementById('houseOption');
-    const subfilter = document.getElementById('restaurantSubfilter');
-    if (typeFilter === 'casa') {
-        list.innerHTML = '';
-        houseOpt.style.display = 'block';
-        subfilter.style.display = 'none';
+/* ═══════════════════════════════════════════════════
+   VENUES
+   ═══════════════════════════════════════════════════ */
+function allVenues() { return [...VENUES, ...state.customVenues]; }
+function filterVenue(type, btn) {
+    btn.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const tiers = document.getElementById('createTiers');
+    tiers.style.display = type === 'restaurante' ? 'flex' : 'none';
+    const houseBlock = document.getElementById('houseBlock');
+    if (type === 'casa') {
+        houseBlock.style.display = 'block';
+        document.getElementById('venueList').innerHTML = '';
         const sel = document.getElementById('houseOwner');
-        sel.innerHTML = '<option value="">Selecionar...</option>' + state.squad.map(m => `<option value="${m.name}">${m.name}</option>`).join('');
+        sel.innerHTML = '<option value="">Selecionar</option>' + state.friends.map(f => `<option value="${f.name}">${f.name}</option>`).join('') + `<option value="${state.user.name}">${state.user.name} (você)</option>`;
         return;
     }
-    houseOpt.style.display = 'none';
-    subfilter.style.display = typeFilter === 'restaurante' ? 'flex' : 'none';
-    let venues = getAllVenues().filter(v => v.type === typeFilter);
-    if (typeFilter === 'restaurante' && state.currentDate.filterTier && state.currentDate.filterTier !== 'all') {
-        venues = venues.filter(v => v.tier === state.currentDate.filterTier);
+    houseBlock.style.display = 'none';
+    renderVenues(type);
+}
+function filterExplore(type, btn) {
+    btn.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const tiers = document.getElementById('exploreTiers');
+    tiers.style.display = type === 'restaurante' ? 'flex' : 'none';
+    renderExplore(type);
+}
+function filterTier(tier, btn, context) {
+    btn.parentElement.querySelectorAll('.tier-btn').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    state.currentRole.filterTier = tier;
+    if (context === 'create') renderVenues('restaurante');
+    else renderExplore('restaurante');
+}
+function renderVenues(typeFilter) {
+    typeFilter = typeFilter || 'restaurante';
+    let venues = allVenues().filter(v => v.type === typeFilter);
+    if (typeFilter === 'restaurante' && state.currentRole.filterTier !== 'all') {
+        venues = venues.filter(v => v.tier === state.currentRole.filterTier);
     }
-    list.innerHTML = venues.map(v => `
-        <button class="venue-card ${state.currentDate.venue && state.currentDate.venue.id === v.id ? 'selected' : ''}" onclick="selectVenue(${v.id})">
-            <div class="venue-top">
+    document.getElementById('venueList').innerHTML = venues.map(v => `
+        <button class="venue-item ${state.currentRole.venue && state.currentRole.venue.id === v.id ? 'selected' : ''}" onclick="selectVenue(${v.id})">
+            <div class="venue-head">
                 <div>
                     <div class="venue-name">${v.name}</div>
-                    <div class="venue-type">${v.cozinha || v.type} · ${v.bairro}</div>
+                    <div class="venue-meta">${v.cozinha || v.type} · ${v.bairro}</div>
                 </div>
-                <div class="venue-price">R$ ${v.price}/p</div>
+                <div class="venue-price">R$ ${v.price}</div>
             </div>
-            <div class="venue-info">
-                <span class="venue-info-item">🕐 ${v.hours}</span>
-            </div>
-            <div class="venue-info" style="margin-top:0.3rem;">
-                <span class="venue-info-item venue-rating">★ ${v.rating || '—'}</span>
-                <span class="venue-info-item">✨ ${v.vibe}</span>
-                ${v.tier === 'high_end' ? '<span class="tag tag-dark" style="font-size:0.62rem; padding:0.2rem 0.55rem;">HIGH END</span>' : ''}
+            <div class="venue-details">
+                <span class="venue-detail">${v.hours}</span>
+                <span class="venue-detail">· ${v.vibe}</span>
+                ${v.tier === 'high_end' ? '<span class="tag tag-dark" style="font-size:0.55rem; padding:0.2rem 0.5rem;">ALTA GASTRONOMIA</span>' : ''}
             </div>
         </button>
     `).join('');
 }
-function renderVenuesPage(typeFilter) {
+function renderExplore(typeFilter) {
     typeFilter = typeFilter || 'restaurante';
-    const list = document.getElementById('venuesPageList');
-    const subfilter = document.getElementById('venuesPageSubfilter');
-    subfilter.style.display = typeFilter === 'restaurante' ? 'flex' : 'none';
-    let venues = getAllVenues().filter(v => v.type === typeFilter);
-    if (typeFilter === 'restaurante' && state.currentDate.filterTier && state.currentDate.filterTier !== 'all') {
-        venues = venues.filter(v => v.tier === state.currentDate.filterTier);
+    let venues = allVenues().filter(v => v.type === typeFilter);
+    if (typeFilter === 'restaurante' && state.currentRole.filterTier !== 'all') {
+        venues = venues.filter(v => v.tier === state.currentRole.filterTier);
     }
-    list.innerHTML = venues.map(v => `
-        <div class="venue-card" style="cursor:default;">
-            <div class="venue-top">
+    document.getElementById('exploreList').innerHTML = venues.map(v => `
+        <div class="venue-item">
+            <div class="venue-head">
                 <div>
                     <div class="venue-name">${v.name}</div>
-                    <div class="venue-type">${v.cozinha || v.type} · ${v.bairro}</div>
+                    <div class="venue-meta">${v.cozinha || v.type} · ${v.bairro}</div>
                 </div>
-                <div class="venue-price">R$ ${v.price}/p</div>
+                <div class="venue-price">R$ ${v.price}</div>
             </div>
-            <div class="venue-info">
-                <span class="venue-info-item">🕐 ${v.hours}</span>
-            </div>
-            <div class="venue-info" style="margin-top:0.3rem;">
-                <span class="venue-info-item venue-rating">★ ${v.rating || '—'}</span>
-                <span class="venue-info-item">✨ ${v.vibe}</span>
-                ${v.tier === 'high_end' ? '<span class="tag tag-dark" style="font-size:0.62rem; padding:0.2rem 0.55rem;">HIGH END</span>' : ''}
+            <div class="venue-details">
+                <span class="venue-detail">${v.hours}</span>
+                <span class="venue-detail">· ${v.vibe}</span>
+                ${v.tier === 'high_end' ? '<span class="tag tag-dark" style="font-size:0.55rem; padding:0.2rem 0.5rem;">ALTA GASTRONOMIA</span>' : ''}
             </div>
         </div>
     `).join('');
 }
-function filterVenues(type, btn) {
-    btn.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    if (type === 'restaurante') {
-        document.querySelectorAll('#restaurantSubfilter .sub-filter').forEach(s => s.classList.remove('active'));
-        document.querySelector('#restaurantSubfilter .sub-filter').classList.add('active');
-        state.currentDate.filterTier = 'all';
-    }
-    renderVenues(type);
-}
-function filterVenuesPage(type, btn) {
-    btn.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    if (type === 'restaurante') {
-        document.querySelectorAll('#venuesPageSubfilter .sub-filter').forEach(s => s.classList.remove('active'));
-        document.querySelector('#venuesPageSubfilter .sub-filter').classList.add('active');
-        state.currentDate.filterTier = 'all';
-    }
-    renderVenuesPage(type);
-}
-function filterRestaurants(tier, btn) {
-    btn.parentElement.querySelectorAll('.sub-filter').forEach(s => s.classList.remove('active'));
-    btn.classList.add('active');
-    state.currentDate.filterTier = tier;
-    renderVenues('restaurante');
-}
-function filterRestaurantsPage(tier, btn) {
-    btn.parentElement.querySelectorAll('.sub-filter').forEach(s => s.classList.remove('active'));
-    btn.classList.add('active');
-    state.currentDate.filterTier = tier;
-    renderVenuesPage('restaurante');
-}
 function selectVenue(id) {
-    const v = getAllVenues().find(v => v.id === id);
-    state.currentDate.venue = v;
+    const v = allVenues().find(v => v.id === id);
+    state.currentRole.venue = v;
     renderVenues(v.type);
-    document.getElementById('floatingNext').classList.add('visible');
+    document.getElementById('floatingCta').classList.add('visible');
 }
-function nextStepFromVenue() {
+function nextFromVenue() {
     nextStep(3);
-    document.getElementById('floatingNext').classList.remove('visible');
+    document.getElementById('floatingCta').classList.remove('visible');
 }
-function confirmHouseAndNext() {
+function confirmHouse() {
     const owner = document.getElementById('houseOwner').value;
-    if (!owner) { showToast('Escolhe de quem é a casa'); return; }
-    state.currentDate.venue = {
-        id: 9999, name: `Casa do ${owner}`, type: 'casa', price: 0,
-        hours: 'Livre', vibe: 'Privativo', bairro: document.getElementById('houseAddress').value || 'Privativo'
-    };
+    if (!owner) { showToast('Selecione o anfitrião'); return; }
+    const addr = document.getElementById('houseAddress').value || '';
+    state.currentRole.venue = { id: 9999, name: `Casa de ${owner}`, type: 'casa', price: 0, hours: 'livre', vibe: 'Privativo', bairro: addr || 'Endereço privado' };
     nextStep(3);
 }
 function openCustomVenueModal() { document.getElementById('modalCustomVenue').classList.add('active'); }
@@ -1475,98 +2247,183 @@ function addCustomVenue() {
     const type = document.getElementById('customVenueType').value;
     const price = parseInt(document.getElementById('customVenuePrice').value) || 0;
     const hours = document.getElementById('customVenueHours').value.trim() || 'A definir';
-    if (!name) { showToast('Dá um nome pro local'); return; }
-    const v = { id: 1000 + state.customVenues.length + 1, name, type, price, hours, rating: null, vibe: 'Custom', bairro: 'Personalizado', cozinha: type };
+    if (!name) { showToast('Nome necessário'); return; }
+    const v = { id: 1000 + state.customVenues.length + 1, name, type, price, hours, vibe: 'Custom', bairro: 'Personalizado', cozinha: type };
     state.customVenues.push(v);
     save();
     renderVenues(type);
     closeModalById('modalCustomVenue');
-    showToast(`${name} adicionado!`, 'success');
+    showToast('Endereço adicionado');
     document.getElementById('customVenueName').value = '';
     document.getElementById('customVenuePrice').value = '';
     document.getElementById('customVenueHours').value = '';
 }
 
-function showPremium() { switchScreen('screen-premium'); }
-function subscribe(plan) {
-    const prices = { mensal: '15,90', trimestral: '39,90', anual: '129,90' };
-    showToast(`Plano ${plan} · R$ ${prices[plan]} — em breve`);
-}
-
-function renderSquad() {
-    const list = document.getElementById('squadList');
-    list.innerHTML = state.squad.map(m => {
-        const initials = m.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        return `
-            <div class="squad-member">
-                <div class="avatar ${m.isMe ? 'avatar-accent' : 'avatar-soft'}">${initials}</div>
-                <div class="member-info">
-                    <div class="member-name">${m.name}${m.isMe ? ' (você)' : ''}</div>
-                    <div class="member-status">${m.insta || 'Sem Instagram'}</div>
-                </div>
-                <div class="member-score">
-                    <h5>${m.score}</h5>
-                    <p>Score</p>
-                </div>
+/* ═══════════════════════════════════════════════════
+   FRIENDS / CIRCLE
+   ═══════════════════════════════════════════════════ */
+function renderCircle() {
+    const list = document.getElementById('friendsList');
+    if (state.friends.length === 0) {
+        list.innerHTML = `
+            <div class="empty">
+                <div class="empty-mark">—</div>
+                <h3>Seu círculo está vazio</h3>
+                <p>Compartilhe seu convite ou adicione alguém manualmente.</p>
             </div>`;
-    }).join('');
+        return;
+    }
+    list.innerHTML = state.friends.map((f, i) => `
+        <div class="friend-row" onclick="viewProfile(${i})">
+            <div class="avatar avatar-sm ${f.gender === 'F' ? 'avatar-gold' : 'avatar-cream'}">${initials(f.name)}</div>
+            <div class="friend-info">
+                <div class="friend-name">${f.name}</div>
+                <div class="friend-handle">@${(f.insta||'').replace(/^@/, '')}</div>
+            </div>
+            <div style="color:var(--ink-30);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+        </div>
+    `).join('');
 }
-function openAddMemberModal() { document.getElementById('modalAddMember').classList.add('active'); }
-function addMember() {
-    const name = document.getElementById('memberName').value.trim();
-    const insta = document.getElementById('memberInsta').value.trim();
-    if (!name) { showToast('Precisa do nome'); return; }
-    state.squad.push({ name, insta, score: 100, isMe: false });
+function openAddFriendModal() { document.getElementById('modalAddFriend').classList.add('active'); }
+function addFriend() {
+    const name = document.getElementById('friendName').value.trim();
+    const insta = document.getElementById('friendInsta').value.trim().replace(/^@/, '');
+    const gender = document.getElementById('friendGender').value;
+    if (!name) { showToast('Nome necessário'); return; }
+    state.friends.push({ name, insta, gender, addedAt: new Date().toISOString() });
     save();
-    renderSquad();
-    updateStats();
-    closeModalById('modalAddMember');
-    showToast(`${name} entrou no squad!`, 'success');
-    document.getElementById('memberName').value = '';
-    document.getElementById('memberInsta').value = '';
+    renderCircle();
+    renderProfile();
+    closeModalById('modalAddFriend');
+    showToast(`${name.split(' ')[0]} adicionado ao círculo`);
+    document.getElementById('friendName').value = '';
+    document.getElementById('friendInsta').value = '';
 }
 function copyInvite() {
-    const code = state.inviteCode;
-    if (navigator.clipboard) navigator.clipboard.writeText(code).then(() => showToast('Código copiado!', 'success'));
-    else showToast('Código: ' + code);
-}
-function joinExistingSquad() {
-    const code = document.getElementById('squadJoinInput').value.trim().toUpperCase();
-    if (!code.startsWith('GRC-')) { showToast('Código inválido'); return; }
-    state.inviteCode = code;
-    state.squadName = 'Squad Compartilhado';
-    save();
-    document.getElementById('squadJoinInput').value = '';
-    document.getElementById('inviteCode').textContent = code;
-    document.getElementById('squadTitle').textContent = state.squadName;
-    showToast(`Entrou no squad ${code}`, 'success');
+    if (navigator.clipboard) navigator.clipboard.writeText(state.inviteCode).then(() => showToast('Convite copiado'));
+    else showToast('Convite: ' + state.inviteCode);
 }
 
-function resetCreateForm() {
-    state.currentDate = { type: null, date: '', time: '20:00', venue: null, peers: [], women: [], budget: 0, filterTier: 'all' };
+/* ═══════════════════════════════════════════════════
+   PROFILE
+   ═══════════════════════════════════════════════════ */
+function renderProfile() {
+    document.getElementById('profileAvatarInner').textContent = initials(state.user.name);
+    document.getElementById('profileName').textContent = state.user.name;
+    document.getElementById('profileHandle').textContent = '@' + (state.user.insta || '—');
+    document.getElementById('profileBio').textContent = state.user.bio || 'Nenhuma bio ainda — toque em Editar perfil.';
+    document.getElementById('statRoles').textContent = state.roles.length;
+    document.getElementById('statFriends').textContent = state.friends.length;
+    const hostCount = state.roles.filter(r => r.host === state.user.name).length;
+    document.getElementById('statHost').textContent = hostCount;
+    document.getElementById('myFriendsCount').textContent = `${state.friends.length} pessoas`;
+
+    // Preview amigos
+    const fp = document.getElementById('myFriendsPreview');
+    if (state.friends.length === 0) {
+        fp.innerHTML = '<p style="font-family:var(--serif); font-style:italic; color:var(--ink-50); font-size:0.88rem; font-weight:300; padding:0.5rem 0;">Ainda sem amigos no círculo.</p>';
+    } else {
+        fp.innerHTML = state.friends.slice(0, 3).map((f, i) => `
+            <div class="friend-row" onclick="viewProfile(${i})">
+                <div class="avatar avatar-sm ${f.gender === 'F' ? 'avatar-gold' : 'avatar-cream'}">${initials(f.name)}</div>
+                <div class="friend-info">
+                    <div class="friend-name">${f.name}</div>
+                    <div class="friend-handle">@${(f.insta||'').replace(/^@/, '')}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Preview encontros
+    const rp = document.getElementById('myRolesPreview');
+    if (state.roles.length === 0) {
+        rp.innerHTML = '<p style="font-family:var(--serif); font-style:italic; color:var(--ink-50); font-size:0.88rem; font-weight:300; padding:0.5rem 0;">Nenhum encontro ainda.</p>';
+    } else {
+        rp.innerHTML = state.roles.slice(0, 3).map(r => {
+            const df = r.date ? new Date(r.date + 'T12:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) : '—';
+            return `
+                <div class="friend-row" onclick="showRoleDetail(${r.id})">
+                    <div class="friend-info">
+                        <div class="friend-name">${r.title}</div>
+                        <div class="friend-handle">${df} · ${r.venue && r.venue.name ? r.venue.name : '—'}</div>
+                    </div>
+                </div>`;
+        }).join('');
+    }
+}
+function openEditProfile() {
+    document.getElementById('editName').value = state.user.name;
+    document.getElementById('editInsta').value = state.user.insta || '';
+    document.getElementById('editBio').value = state.user.bio || '';
+    document.getElementById('modalEditProfile').classList.add('active');
+}
+function saveProfile() {
+    state.user.name = document.getElementById('editName').value.trim() || state.user.name;
+    state.user.insta = document.getElementById('editInsta').value.trim().replace(/^@/, '');
+    state.user.bio = document.getElementById('editBio').value.trim();
+    save();
+    renderProfile();
+    document.getElementById('headerAvatar').textContent = initials(state.user.name);
+    closeModalById('modalEditProfile');
+    showToast('Perfil atualizado');
+}
+function viewProfile(friendIdx) {
+    const f = state.friends[friendIdx];
+    if (!f) return;
+    document.getElementById('profileViewContent').innerHTML = `
+        <div class="profile-hero" style="padding-top:0;">
+            <div class="avatar avatar-xl ${f.gender === 'F' ? 'avatar-gold' : ''}" style="margin:0 auto 1.25rem; border: 0.5px solid var(--gold); padding: 4px; background: var(--cream);">
+                <span class="inner" style="border-radius:50%; background:${f.gender === 'F' ? 'var(--gold)' : 'var(--ink)'}; color:var(--cream); width:100%; height:100%; display:flex; align-items:center; justify-content:center;">${initials(f.name)}</span>
+            </div>
+            <div class="profile-name">${f.name}</div>
+            <div class="profile-handle">@${(f.insta||'').replace(/^@/, '') || '—'}</div>
+            <div class="profile-bio">${f.bio || 'Membro do círculo.'}</div>
+            <div class="profile-stats">
+                <div class="profile-stat"><div class="profile-stat-num">${state.roles.filter(r => r.attendees && r.attendees.includes(f.name)).length}</div><div class="profile-stat-label">Encontros</div></div>
+                <div class="profile-stat"><div class="profile-stat-num">—</div><div class="profile-stat-label">Mutual</div></div>
+                <div class="profile-stat"><div class="profile-stat-num">${f.gender === 'F' ? 'F' : 'M'}</div><div class="profile-stat-label">Gênero</div></div>
+            </div>
+        </div>
+        <div style="display:flex; gap:0.75rem;">
+            <button class="btn btn-dark btn-full" onclick="inviteToRole(${friendIdx})">Convidar para encontro</button>
+        </div>
+    `;
+    document.getElementById('modalProfileView').classList.add('active');
+}
+function inviteToRole(idx) {
+    closeModalById('modalProfileView');
+    switchScreen('screen-create');
+    showToast('Monte o encontro e escolha o convidado');
+}
+
+/* ═══════════════════════════════════════════════════
+   CREATE ROLE
+   ═══════════════════════════════════════════════════ */
+function resetCreate() {
+    state.currentRole = { type: null, date: '', time: '20:00', venue: null, guests: [], attendees: [], budget: 0, filterTier: 'all' };
     document.querySelectorAll('.step').forEach(s => s.classList.remove('active', 'done'));
     document.querySelector('.step[data-step="1"]').classList.add('active');
     document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
     document.getElementById('step1').classList.add('active');
-    document.querySelectorAll('.date-type-card').forEach(c => c.classList.remove('selected'));
-    const di = document.getElementById('dateDate');
+    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+    const di = document.getElementById('roleDate');
     if (di) di.valueAsDate = new Date();
-    document.getElementById('dateTime').value = '20:00';
-    document.getElementById('floatingNext').classList.remove('visible');
+    document.getElementById('roleTime').value = '20:00';
+    document.getElementById('floatingCta').classList.remove('visible');
     renderVenues();
 }
-function selectDateType(card, type) {
-    document.querySelectorAll('.date-type-card').forEach(c => c.classList.remove('selected'));
+function selectType(card, type) {
+    document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
-    state.currentDate.type = type;
+    state.currentRole.type = type;
 }
 function nextStep(n) {
-    if (n === 2 && !state.currentDate.type) { showToast('Escolhe o tipo do date'); return; }
-    if (n === 3 && state.currentDate.type !== 'hunt' && !state.currentDate.venue) {
-        showToast('Seleciona um local'); return;
-    }
-    state.currentDate.date = document.getElementById('dateDate').value;
-    state.currentDate.time = document.getElementById('dateTime').value;
+    if (n === 2 && !state.currentRole.type) { showToast('Selecione a natureza'); return; }
+    if (n === 3 && !state.currentRole.venue) { showToast('Selecione o lugar'); return; }
+    state.currentRole.date = document.getElementById('roleDate').value;
+    state.currentRole.time = document.getElementById('roleTime').value;
     document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
     document.getElementById('step' + n).classList.add('active');
     document.querySelectorAll('.step').forEach(s => {
@@ -1575,8 +2432,8 @@ function nextStep(n) {
         if (sn < n) s.classList.add('done');
         if (sn === n) s.classList.add('active');
     });
-    document.getElementById('floatingNext').classList.remove('visible');
-    if (n === 3) renderSquadCheck();
+    document.getElementById('floatingCta').classList.remove('visible');
+    if (n === 3) renderAttendeesCheck();
     if (n === 4) renderSummary();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1589,311 +2446,307 @@ function prevStep(n) {
         if (sn < n) s.classList.add('done');
         if (sn === n) s.classList.add('active');
     });
-    document.getElementById('floatingNext').classList.remove('visible');
+    document.getElementById('floatingCta').classList.remove('visible');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-function renderSquadCheck() {
-    const list = document.getElementById('squadCheckList');
-    list.innerHTML = state.squad.map(m => {
-        const initials = m.name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-        const checked = state.currentDate.peers.includes(m.name) || m.isMe;
+function renderAttendeesCheck() {
+    const list = document.getElementById('friendCheckList');
+    const allAttendees = [{ name: state.user.name, insta: state.user.insta, gender: state.user.gender, isMe: true }, ...state.friends];
+    if (!state.currentRole.attendees.includes(state.user.name)) state.currentRole.attendees.push(state.user.name);
+    list.innerHTML = allAttendees.map(m => {
+        const checked = state.currentRole.attendees.includes(m.name) || m.isMe;
         return `
-            <label style="display:flex; align-items:center; gap:1rem; padding:0.85rem 1.1rem; cursor:pointer; background:var(--bg-card); border:1.5px solid ${checked ? 'var(--accent)' : 'var(--border)'}; border-radius:var(--radius-sm); margin-bottom:0.5rem;">
-                <input type="checkbox" ${checked ? 'checked' : ''} ${m.isMe ? 'disabled' : ''} onchange="togglePeer('${m.name}', this.checked)" style="accent-color:var(--accent); width:18px; height:18px;">
-                <div class="avatar ${m.isMe ? 'avatar-accent' : 'avatar-soft'}">${initials}</div>
-                <div>
-                    <div style="font-weight:700; font-size:0.92rem;">${m.name}</div>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">${m.insta || ''}</div>
+            <label class="check-row ${checked ? 'checked' : ''}" onclick="toggleAttendee('${m.name}', ${m.isMe ? 'true' : 'false'})">
+                <div class="check-box">
+                    ${checked ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4 4L19 7"/></svg>' : ''}
+                </div>
+                <div class="avatar avatar-sm ${m.gender === 'F' ? 'avatar-gold' : 'avatar-cream'}">${initials(m.name)}</div>
+                <div class="check-info">
+                    <div class="check-name">${m.name}${m.isMe ? ' · você' : ''}</div>
+                    <div class="check-sub">@${(m.insta||'').replace(/^@/, '') || '—'}</div>
                 </div>
             </label>`;
     }).join('');
-    if (!state.currentDate.peers.includes(state.user.name)) state.currentDate.peers.push(state.user.name);
-    renderWomenList();
-    populateWomanPeerSelect();
-    document.getElementById('womenSection').style.display = state.currentDate.type === 'hunt' ? 'none' : 'block';
+    renderGuests();
+    populateGuestPair();
+    document.getElementById('guestsTitle').style.display = state.currentRole.type === 'casa' || state.currentRole.type === 'festa' || state.currentRole.type === 'jantar' || state.currentRole.type === 'drinks' ? 'block' : 'none';
+    document.getElementById('addGuestBtn').style.display = document.getElementById('guestsTitle').style.display;
 }
-function togglePeer(name, checked) {
-    if (checked && !state.currentDate.peers.includes(name)) state.currentDate.peers.push(name);
-    else if (!checked) state.currentDate.peers = state.currentDate.peers.filter(p => p !== name);
-    populateWomanPeerSelect();
-    renderSquadCheck();
+function toggleAttendee(name, isMe) {
+    if (isMe) return;
+    const idx = state.currentRole.attendees.indexOf(name);
+    if (idx === -1) state.currentRole.attendees.push(name);
+    else state.currentRole.attendees.splice(idx, 1);
+    renderAttendeesCheck();
 }
-function renderWomenList() {
-    const list = document.getElementById('womenList');
-    if (!state.currentDate.women.length) {
-        list.innerHTML = '<p style="font-size:0.82rem; color:var(--text-muted); text-align:center; padding:0.8rem;">Nenhuma mulher adicionada</p>';
+function renderGuests() {
+    const list = document.getElementById('guestList');
+    if (!state.currentRole.guests.length) {
+        list.innerHTML = '<p style="font-family:var(--serif); font-style:italic; color:var(--ink-50); font-size:0.85rem; padding:0.5rem 0; font-weight:300;">Nenhum acompanhante.</p>';
         return;
     }
-    list.innerHTML = state.currentDate.women.map((w, i) => `
-        <div class="woman-item">
-            <div class="woman-info">
-                <div class="woman-avatar">${w.name.charAt(0)}</div>
-                <div>
-                    <div class="woman-name">${w.name}</div>
-                    <div class="woman-pair">← ${w.peer}${w.insta ? ' · ' + w.insta : ''}</div>
-                </div>
+    list.innerHTML = state.currentRole.guests.map((g, i) => `
+        <div class="guest-row">
+            <div class="avatar avatar-sm avatar-gold">${initials(g.name)}</div>
+            <div class="guest-info">
+                <div class="guest-name">${g.name}</div>
+                <div class="guest-sub">com ${g.pair}${g.insta ? ' · @' + g.insta.replace(/^@/, '') : ''}</div>
             </div>
-            <button onclick="removeWoman(${i})" style="color:var(--accent); font-size:1.3rem; padding:0 0.5rem;">×</button>
+            <button class="guest-remove" onclick="removeGuest(${i})">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
         </div>
     `).join('');
 }
-function populateWomanPeerSelect() {
-    const sel = document.getElementById('womanPeer');
-    sel.innerHTML = '<option value="">Selecionar...</option>' + state.currentDate.peers.map(p => `<option value="${p}">${p}</option>`).join('');
+function populateGuestPair() {
+    const sel = document.getElementById('guestPair');
+    sel.innerHTML = '<option value="">Selecionar</option>' + state.currentRole.attendees.map(a => `<option value="${a}">${a}</option>`).join('');
 }
-function openAddWomanModal() { document.getElementById('modalAddWoman').classList.add('active'); }
-function addWoman() {
-    const name = document.getElementById('womanName').value.trim();
-    const insta = document.getElementById('womanInsta').value.trim();
-    const peer = document.getElementById('womanPeer').value;
-    if (!name) { showToast('Nome dela'); return; }
-    if (!peer) { showToast('Quem tá alinhando?'); return; }
-    state.currentDate.women.push({ name, insta, peer });
-    renderWomenList();
-    closeModalById('modalAddWoman');
-    showToast(`${name} adicionada`, 'success');
-    document.getElementById('womanName').value = '';
-    document.getElementById('womanInsta').value = '';
+function openAddGuestModal() { populateGuestPair(); document.getElementById('modalAddGuest').classList.add('active'); }
+function addGuest() {
+    const name = document.getElementById('guestName').value.trim();
+    const insta = document.getElementById('guestInsta').value.trim();
+    const pair = document.getElementById('guestPair').value;
+    if (!name) { showToast('Nome'); return; }
+    if (!pair) { showToast('Selecione quem acompanha'); return; }
+    state.currentRole.guests.push({ name, insta, pair });
+    renderGuests();
+    closeModalById('modalAddGuest');
+    showToast(`${name.split(' ')[0]} adicionado`);
+    document.getElementById('guestName').value = '';
+    document.getElementById('guestInsta').value = '';
 }
-function removeWoman(i) { state.currentDate.women.splice(i, 1); renderWomenList(); }
+function removeGuest(i) { state.currentRole.guests.splice(i, 1); renderGuests(); }
 function renderSummary() {
-    const d = state.currentDate;
-    const typeLabels = { double: 'Double Date 👫', group: 'Grupo 🎉', hunt: 'Hunt Mode 🎯', house: 'Na Casa 🏠' };
-    const dateFormatted = d.date ? new Date(d.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) : 'Não definido';
-    const venueInfo = d.venue ? d.venue.name : 'Não selecionado';
-    document.getElementById('dateSummary').innerHTML = `
-        <div class="card" style="cursor:default; margin-bottom:0;">
-            <div class="date-card-header">
-                <span class="date-card-title">${typeLabels[d.type] || d.type}</span>
-                <span class="tag tag-accent">Novo</span>
-            </div>
-            <div class="date-card-details">
-                <div class="date-detail">📅 ${dateFormatted}</div>
-                <div class="date-detail">🕐 ${d.time || '20:00'}</div>
-                <div class="date-detail">📍 ${venueInfo}</div>
-                <div class="date-detail">👥 ${d.peers.length} homens${d.women.length > 0 ? ' + ' + d.women.length + ' mulheres' : ''}</div>
-            </div>
-            ${d.women.length > 0 ? `
-            <div class="women-section">
-                <div class="women-label">Alinhamento</div>
-                ${d.women.map(w => `
-                    <div class="woman-item">
-                        <div class="woman-info">
-                            <div class="woman-avatar">${w.name.charAt(0)}</div>
-                            <div>
-                                <div class="woman-name">${w.name}</div>
-                                <div class="woman-pair">← ${w.peer}</div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>` : ''}
+    const r = state.currentRole;
+    const typeNames = { jantar: 'Jantar', drinks: 'Drinks', festa: 'Festa privada', casa: 'Em casa' };
+    const df = r.date ? new Date(r.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) : '—';
+    document.getElementById('roleSummary').innerHTML = `
+        <div class="summary-card">
+            <div class="summary-row"><span class="key">Natureza</span><span class="val">${typeNames[r.type] || r.type}</span></div>
+            <div class="summary-row"><span class="key">Quando</span><span class="val">${df} · ${r.time}</span></div>
+            <div class="summary-row"><span class="key">Lugar</span><span class="val">${r.venue ? r.venue.name : '—'}</span></div>
+            <div class="summary-row"><span class="key">Círculo</span><span class="val">${r.attendees.length} ${r.attendees.length > 1 ? 'pessoas' : 'pessoa'}</span></div>
+            ${r.guests.length > 0 ? `<div class="summary-row"><span class="key">Acompanhantes</span><span class="val">${r.guests.length}</span></div>` : ''}
         </div>`;
-    const venuePrice = d.venue && d.venue.price ? d.venue.price : 0;
-    const estimated = venuePrice * d.peers.length;
-    document.getElementById('summaryBudget').textContent = 'R$ ' + estimated;
-    document.getElementById('summaryPerPerson').textContent = `R$ ${venuePrice} por pessoa · ${d.peers.length} homens pagando`;
+    const venuePrice = r.venue && r.venue.price ? r.venue.price : 0;
+    const total = venuePrice * r.attendees.length;
+    document.getElementById('budgetTotal').textContent = 'R$ ' + total;
+    document.getElementById('budgetSplit').textContent = `R$ ${venuePrice} · por pessoa`;
     document.getElementById('budgetInput').value = venuePrice || '';
 }
 function updateBudget() {
     const val = parseInt(document.getElementById('budgetInput').value) || 0;
-    const peers = state.currentDate.peers.length || 1;
-    document.getElementById('summaryBudget').textContent = 'R$ ' + (val * peers);
-    document.getElementById('summaryPerPerson').textContent = `R$ ${val} por pessoa · ${peers} homens pagando`;
-    state.currentDate.budget = val;
+    const n = state.currentRole.attendees.length || 1;
+    document.getElementById('budgetTotal').textContent = 'R$ ' + (val * n);
+    document.getElementById('budgetSplit').textContent = `R$ ${val} · por pessoa`;
+    state.currentRole.budget = val;
 }
-function createDate() {
-    const d = state.currentDate;
-    if (d.peers.length < 1) { showToast('Precisa de 1 pessoa ao menos'); return; }
-    const typeLabels = { double: 'Double Date', group: 'Date em Grupo', hunt: 'Hunt Mode', house: 'Na Casa' };
-    const newDate = {
+function createRole() {
+    const r = state.currentRole;
+    if (r.attendees.length < 1) { showToast('Selecione ao menos um atendente'); return; }
+    const typeNames = { jantar: 'Jantar', drinks: 'Drinks', festa: 'Festa privada', casa: 'Em casa' };
+    const newRole = {
         id: Date.now(),
-        title: typeLabels[d.type] || 'Date',
-        type: d.type,
-        date: d.date,
-        time: d.time,
-        venue: d.venue,
-        peers: [...d.peers],
-        women: [...d.women],
-        budget: d.budget || (d.venue && d.venue.price) || 0,
-        status: 'confirmado',
-        createdBy: state.user.name,
+        title: typeNames[r.type] || 'Encontro',
+        type: r.type,
+        date: r.date,
+        time: r.time,
+        venue: r.venue,
+        attendees: [...r.attendees],
+        guests: [...r.guests],
+        budget: r.budget || (r.venue && r.venue.price) || 0,
+        host: state.user.name,
         createdAt: new Date().toISOString()
     };
-    state.dates.unshift(newDate);
-    state.user.score += 10;
-    const me = state.squad.find(m => m.isMe);
-    if (me) me.score += 10;
+    state.roles.unshift(newRole);
     save();
-    updateStats();
-    showToast('Date fechado! É ter gerência 🏆', 'success');
-    switchScreen('screen-home');
-    renderUpcoming();
-    renderDates();
-    renderHistory();
+    showToast('Encontro confirmado');
+    switchScreen('screen-feed');
 }
 
-function renderUpcoming() {
-    const container = document.getElementById('upcomingContainer');
-    const today = new Date().toISOString().split('T')[0];
-    const upcoming = state.dates.find(d => d.status === 'confirmado' && (!d.date || d.date >= today));
-    if (!upcoming) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">📅</div>
-                <h3>Nada marcado ainda</h3>
-                <p>Cria um date e chama o squad. A gerência começa aqui.</p>
-                <button class="btn btn-accent" onclick="switchScreen('screen-create')">Criar Date</button>
+/* ═══════════════════════════════════════════════════
+   FEED
+   ═══════════════════════════════════════════════════ */
+function renderFeed() {
+    const list = document.getElementById('feedList');
+    if (state.roles.length === 0) {
+        list.innerHTML = `
+            <div class="empty">
+                <div class="empty-mark">—</div>
+                <h3>Nada à mesa ainda</h3>
+                <p>Organize o primeiro encontro e seu círculo verá aqui.</p>
+                <button class="btn btn-outline btn-sm" onclick="switchScreen('screen-create')">Organizar encontro</button>
             </div>`;
         return;
     }
-    const df = upcoming.date ? new Date(upcoming.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) : '—';
-    container.innerHTML = `
-        <div class="upcoming-date" onclick="showDateDetail(${upcoming.id})">
-            <div class="upcoming-header">
-                <h4>${upcoming.title}</h4>
-                <span class="tag tag-success">Confirmado</span>
+    list.innerHTML = state.roles.map(r => {
+        const df = r.date ? new Date(r.date + 'T12:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' }) : '—';
+        const typeNames = { jantar: 'um jantar', drinks: 'drinks', festa: 'uma festa privada', casa: 'um encontro em casa' };
+        const actionText = `está organizando <strong>${typeNames[r.type] || r.type}</strong> ${r.venue ? 'em <span class="place">' + r.venue.name + '</span>' : ''}`;
+        const timeAgo = getTimeAgo(r.createdAt);
+        return `
+            <div class="feed-post" onclick="showRoleDetail(${r.id})">
+                <div class="post-header">
+                    <div class="avatar avatar-md avatar-cream">${initials(r.host)}</div>
+                    <div class="post-identity">
+                        <div class="post-name">${r.host}</div>
+                        <div class="post-handle">@${(state.user.insta||'').replace(/^@/, '')}</div>
+                    </div>
+                    <div class="post-time">${timeAgo}</div>
+                </div>
+                <div class="post-action">${r.host}, ${actionText}.</div>
+                <div class="post-meta">
+                    <div class="post-meta-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="16" rx="1"/><path d="M4 9h16M9 3v4M15 3v4"/></svg>
+                        ${df}
+                    </div>
+                    <div class="post-meta-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                        ${r.time}
+                    </div>
+                    ${r.budget ? `<div class="post-meta-item">R$ ${r.budget} · p/ pessoa</div>` : ''}
+                </div>
+                <div class="post-participants">
+                    <div class="participants-stack">
+                        ${r.attendees.slice(0,4).map(p => `<div class="avatar avatar-xs avatar-cream">${initials(p)}</div>`).join('')}
+                        ${r.attendees.length > 4 ? `<div class="avatar avatar-xs" style="background:var(--ink); color:var(--cream);">+${r.attendees.length - 4}</div>` : ''}
+                    </div>
+                    <div class="participants-count">${r.attendees.length}${r.guests.length > 0 ? ' + ' + r.guests.length : ''} confirmados</div>
+                </div>
             </div>
-            <div class="upcoming-details">
-                <div class="upcoming-detail"><span class="icon">📅</span> ${df}</div>
-                <div class="upcoming-detail"><span class="icon">🕐</span> ${upcoming.time}</div>
-                <div class="upcoming-detail"><span class="icon">📍</span> ${upcoming.venue && upcoming.venue.name ? upcoming.venue.name : '—'}</div>
-                <div class="upcoming-detail"><span class="icon">💰</span> R$ ${upcoming.budget || 0}/pessoa</div>
-            </div>
-            <div class="upcoming-peers">
-                ${upcoming.peers.map(p => `<div class="avatar avatar-accent">${p.charAt(0).toUpperCase()}</div>`).join('')}
-            </div>
-        </div>`;
+        `;
+    }).join('');
 }
-function renderHistory() {
-    const container = document.getElementById('historyContainer');
-    const today = new Date().toISOString().split('T')[0];
-    const history = state.dates.filter(d => d.date && d.date < today);
-    if (!history.length) {
-        container.innerHTML = '<p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:1rem;">Seus dates vão aparecer aqui depois que rolarem. 🏆</p>';
+function getTimeAgo(iso) {
+    if (!iso) return '—';
+    const diff = Date.now() - new Date(iso).getTime();
+    const min = Math.floor(diff / 60000);
+    if (min < 1) return 'agora';
+    if (min < 60) return `${min}m`;
+    const h = Math.floor(min / 60);
+    if (h < 24) return `${h}h`;
+    const d = Math.floor(h / 24);
+    return `${d}d`;
+}
+
+/* ═══════════════════════════════════════════════════
+   ROLES (AGENDA)
+   ═══════════════════════════════════════════════════ */
+function renderRoles() {
+    const list = document.getElementById('rolesList');
+    if (state.roles.length === 0) {
+        list.innerHTML = `
+            <div class="empty">
+                <div class="empty-mark">—</div>
+                <h3>Agenda em branco</h3>
+                <p>Nenhum encontro na agenda. Comece organizando algo.</p>
+                <button class="btn btn-outline btn-sm" onclick="switchScreen('screen-create')">Organizar encontro</button>
+            </div>`;
         return;
     }
-    container.innerHTML = history.slice(0, 5).map(d => {
-        const df = d.date ? new Date(d.date + 'T12:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' }) : '—';
+    list.innerHTML = state.roles.map(r => {
+        const df = r.date ? new Date(r.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' }) : '—';
+        const typeNames = { jantar: 'Jantar', drinks: 'Drinks', festa: 'Festa privada', casa: 'Em casa' };
         return `
-            <div class="date-card" onclick="showDateDetail(${d.id})">
-                <div class="date-card-header">
-                    <span class="date-card-title">${d.title}</span>
-                    <span class="tag tag-muted">Histórico</span>
+            <div class="feed-post" onclick="showRoleDetail(${r.id})">
+                <div class="post-header">
+                    <div style="flex:1;">
+                        <div class="post-name" style="font-family:var(--serif); font-size:1.1rem;">${typeNames[r.type] || r.title}</div>
+                        <div class="post-handle">${r.venue ? r.venue.name : '—'}</div>
+                    </div>
+                    <span class="tag tag-gold">Confirmado</span>
                 </div>
-                <div class="date-card-details">
-                    <div class="date-detail">📅 ${df} · ${d.time}</div>
-                    <div class="date-detail">📍 ${d.venue && d.venue.name ? d.venue.name : '—'}</div>
+                <div class="post-meta" style="margin-bottom:0; padding-top:1rem;">
+                    <div class="post-meta-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="5" width="16" height="16" rx="1"/></svg>
+                        ${df} · ${r.time}
+                    </div>
+                    <div class="post-meta-item">${r.attendees.length} pessoas</div>
+                    ${r.budget ? `<div class="post-meta-item">R$ ${r.budget}</div>` : ''}
                 </div>
             </div>`;
     }).join('');
 }
-function renderDates() {
-    const container = document.getElementById('datesListContainer');
-    if (!state.dates.length) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-icon">📋</div>
-                <h3>Agenda limpa</h3>
-                <p>Ainda não tem date. Bora criar o primeiro?</p>
-                <button class="btn btn-accent" onclick="switchScreen('screen-create')">Criar Date</button>
-            </div>`;
-        return;
-    }
-    container.innerHTML = state.dates.map(d => {
-        const df = d.date ? new Date(d.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' }) : '—';
-        const typeEmojis = { double: '👫', group: '🎉', hunt: '🎯', house: '🏠' };
-        return `
-            <div class="date-card" onclick="showDateDetail(${d.id})">
-                <div class="date-card-header">
-                    <span class="date-card-title">${typeEmojis[d.type] || '📅'} ${d.title}</span>
-                    <span class="tag tag-success">Confirmado</span>
-                </div>
-                <div class="date-card-details">
-                    <div class="date-detail">📅 ${df} às ${d.time}</div>
-                    <div class="date-detail">📍 ${d.venue && d.venue.name ? d.venue.name : 'Sem local'}</div>
-                    ${d.budget ? `<div class="date-detail">💰 R$ ${d.budget}/pessoa</div>` : ''}
-                </div>
-                <div class="date-participants">
-                    <div class="date-avatars">
-                        ${d.peers.slice(0,4).map(p => `<div class="avatar avatar-accent">${p.charAt(0).toUpperCase()}</div>`).join('')}
-                        ${d.peers.length > 4 ? `<div class="avatar avatar-dark">+${d.peers.length - 4}</div>` : ''}
-                    </div>
-                    <span class="date-count">${d.peers.length}H ${d.women.length > 0 ? '+ ' + d.women.length + 'M' : ''}</span>
-                </div>
-            </div>`;
-    }).join('');
-}
-function showDateDetail(id) {
-    const d = state.dates.find(dt => dt.id === id);
-    if (!d) return;
-    const df = d.date ? new Date(d.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) : '—';
-    const typeEmojis = { double: '👫', group: '🎉', hunt: '🎯', house: '🏠' };
-    const totalCost = (d.budget || 0) * d.peers.length;
-    document.getElementById('dateDetailContent').innerHTML = `
-        <h3>${typeEmojis[d.type] || '📅'} ${d.title}</h3>
-        <div class="date-card-details" style="margin-bottom:1.5rem;">
-            <div class="date-detail">📅 ${df}</div>
-            <div class="date-detail">🕐 ${d.time}</div>
-            <div class="date-detail">📍 ${d.venue && d.venue.name ? d.venue.name : 'Sem local'}</div>
-            ${d.venue && d.venue.hours ? `<div class="date-detail">⏰ ${d.venue.hours}</div>` : ''}
-            <div class="date-detail">👤 Criado por ${d.createdBy}</div>
+function showRoleDetail(id) {
+    const r = state.roles.find(rr => rr.id === id);
+    if (!r) return;
+    const df = r.date ? new Date(r.date + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) : '—';
+    const typeNames = { jantar: 'Jantar', drinks: 'Drinks', festa: 'Festa privada', casa: 'Em casa' };
+    const total = (r.budget || 0) * r.attendees.length;
+    document.getElementById('roleDetailContent').innerHTML = `
+        <div class="eyebrow gold">Encontro</div>
+        <h3>${typeNames[r.type] || r.title}</h3>
+        <div class="summary-card">
+            <div class="summary-row"><span class="key">Quando</span><span class="val">${df}</span></div>
+            <div class="summary-row"><span class="key">Horário</span><span class="val">${r.time}</span></div>
+            <div class="summary-row"><span class="key">Lugar</span><span class="val">${r.venue ? r.venue.name : '—'}</span></div>
+            ${r.venue && r.venue.hours ? `<div class="summary-row"><span class="key">Funcionamento</span><span class="val" style="font-size:0.85rem;">${r.venue.hours}</span></div>` : ''}
+            <div class="summary-row"><span class="key">Anfitrião</span><span class="val">${r.host}</span></div>
         </div>
-        <div class="section-label">Squad presente</div>
+
+        <div class="eyebrow">No encontro</div>
         <div style="margin-bottom:1.5rem;">
-            ${d.peers.map(p => {
-                const initials = p.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
-                return `<div style="display:flex; align-items:center; gap:0.8rem; padding:0.5rem 0;">
-                    <div class="avatar avatar-accent">${initials}</div>
-                    <span style="font-weight:600;">${p}</span>
-                </div>`;
-            }).join('')}
+            ${r.attendees.map(p => `
+                <div class="friend-row">
+                    <div class="avatar avatar-sm avatar-cream">${initials(p)}</div>
+                    <div class="friend-info"><div class="friend-name">${p}</div></div>
+                </div>`).join('')}
         </div>
-        ${d.women.length > 0 ? `
-        <div class="section-label">Mulheres alinhadas</div>
+
+        ${r.guests.length > 0 ? `
+        <div class="eyebrow">Acompanhantes</div>
         <div style="margin-bottom:1.5rem;">
-            ${d.women.map(w => `
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:0.5rem 0;">
-                    <div style="display:flex; align-items:center; gap:0.6rem;">
-                        <div class="woman-avatar">${w.name.charAt(0)}</div>
-                        <div>
-                            <div style="font-weight:500;">${w.name}</div>
-                            <div style="font-size:0.72rem; color:var(--text-muted);">${w.insta || ''}</div>
-                        </div>
+            ${r.guests.map(g => `
+                <div class="friend-row">
+                    <div class="avatar avatar-sm avatar-gold">${initials(g.name)}</div>
+                    <div class="friend-info">
+                        <div class="friend-name">${g.name}</div>
+                        <div class="friend-handle">com ${g.pair}${g.insta ? ' · @' + g.insta.replace(/^@/, '') : ''}</div>
                     </div>
-                    <span class="tag tag-accent">← ${w.peer}</span>
-                </div>
-            `).join('')}
+                </div>`).join('')}
         </div>` : ''}
-        <div class="budget-summary" style="margin-bottom:1rem;">
-            <div style="font-size:0.68rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem; font-weight:700;">Budget Total</div>
-            <div class="budget-total">R$ ${totalCost}</div>
-            <div class="budget-per-person">R$ ${d.budget || 0} por pessoa · ${d.peers.length} homens pagando</div>
+
+        <div class="budget-display">
+            <div class="budget-label">Total estimado</div>
+            <div class="budget-value">R$ ${total}</div>
+            <div class="budget-split">R$ ${r.budget || 0} · por pessoa · ${r.attendees.length} pagando</div>
         </div>
-        <div style="display:flex; gap:0.8rem; margin-top:1rem;">
-            <button class="btn btn-outline btn-full" onclick="closeModalById('modalDateDetail')">Fechar</button>
-            <button class="btn btn-accent btn-full" onclick="shareDate(${d.id})">📤 Compartilhar</button>
+
+        <div style="display:flex; gap:0.75rem;">
+            <button class="btn btn-outline btn-full" onclick="closeModalById('modalRoleDetail')">Fechar</button>
+            <button class="btn btn-dark btn-full" onclick="shareRole(${r.id})">Compartilhar</button>
         </div>
     `;
-    document.getElementById('modalDateDetail').classList.add('active');
+    document.getElementById('modalRoleDetail').classList.add('active');
 }
-function shareDate(id) {
-    const d = state.dates.find(dt => dt.id === id);
-    if (!d) return;
-    const df = d.date ? new Date(d.date + 'T12:00').toLocaleDateString('pt-BR') : '—';
-    const text = `🎯 GERÊNCIA — Date Confirmado!\n\n${d.title}\n📅 ${df} às ${d.time}\n📍 ${d.venue && d.venue.name ? d.venue.name : 'TBD'}\n👥 ${d.peers.join(', ')}\n💰 R$ ${d.budget || 0}/pessoa\n\nÉ ter gerência. 🤝`;
-    if (navigator.share) navigator.share({ title: 'GERÊNCIA', text });
-    else { if (navigator.clipboard) navigator.clipboard.writeText(text); showToast('Copiado!', 'success'); }
+function shareRole(id) {
+    const r = state.roles.find(rr => rr.id === id);
+    if (!r) return;
+    const df = r.date ? new Date(r.date + 'T12:00').toLocaleDateString('pt-BR') : '—';
+    const text = `GERÊNCIA — ${r.title}\n\n${df} · ${r.time}\n${r.venue ? r.venue.name : ''}\n${r.attendees.length} confirmados · R$ ${r.budget || 0}/pessoa`;
+    if (navigator.share) navigator.share({ title: 'Gerência', text });
+    else { if (navigator.clipboard) navigator.clipboard.writeText(text); showToast('Copiado'); }
 }
-function updateStats() {
-    document.getElementById('statDates').textContent = state.dates.length;
-    document.getElementById('statSquad').textContent = state.squad.length;
-    document.getElementById('statScore').textContent = (state.user && state.user.score) || 100;
+
+/* ═══════════════════════════════════════════════════
+   MEMBERS
+   ═══════════════════════════════════════════════════ */
+function subscribe(plan) {
+    const p = { mensal: 'R$ 15,90', trimestral: 'R$ 39,90', anual: 'R$ 129,90' };
+    showToast(`${plan.toUpperCase()} · ${p[plan]} · em breve`);
 }
+
+/* ═══════════════════════════════════════════════════
+   UTILS
+   ═══════════════════════════════════════════════════ */
 function closeModal(e, id) { if (e.target.classList.contains('modal-overlay')) document.getElementById(id).classList.remove('active'); }
 function closeModalById(id) { document.getElementById(id).classList.remove('active'); }
-function showProfile() { showToast(`${state.user.name} · Score: ${state.user.score} 🏆`); }
+function showNotifications() {
+    showToast('Sem convites pendentes');
+}
 
+/* INIT */
 init();
 </script>
 </body>
